@@ -4,24 +4,31 @@ END
 LAYOUT
 GRID
 {
-[cal                       ]<GROUP g1               >
-[                          ] Type:  [ct             ]
-[                          ] Theme: [cc             ]
-[                          ] Date:  [cy     :cm     ]
-[                          ][sdn                    ]
-[                          ][sdu                    ]
-[                          ][swn                    ]
-[                          ] -----------------------
-[                          ] Date:  [cd             ]
-[                          ]<                       >
+[cal        ]<GROUP g1               >
+[           ] Type: [ct              ]
+[           ] Theme:[cc              ]
+[           ] Date: [cy       ][cm   ]
+[           ][sdn                    ]
+[           ][sdu                    ]
+[           ][swn                    ]
+[           ] -----------------------
+[           ] Date:  [cd             ]
+[           ]<                       >
 }
 END
 END
 
 ATTRIBUTES
 
-GROUP g1: group1, TEXT="Parameters";
+WEBCOMPONENT cal=FORMONLY.calendar,
+   COMPONENTTYPE="fglsvgcanvas",
+   PROPERTIES=(selection="calendar_selection"),
+   SIZEPOLICY=FIXED,
+   STRETCH=BOTH,
+   SCROLLBARS=NONE
+;
 
+GROUP g1: group1, TEXT="Parameters";
 COMBOBOX ct=FORMONLY.curr_type, NOT NULL,
    INITIALIZER=cmb_init_types;
 COMBOBOX cc=FORMONLY.curr_theme, NOT NULL,
@@ -35,12 +42,6 @@ CHECKBOX sdu=FORMONLY.show_daynums, NOT NULL,
    TEXT="Show day numbers";
 CHECKBOX swn=FORMONLY.show_weeknums, NOT NULL,
    TEXT="Show week numbers";
-WEBCOMPONENT cal=FORMONLY.calendar,
-   COMPONENTTYPE="fglsvgcanvas",
-   PROPERTIES=(selection="calendar_selection"),
-   SIZEPOLICY=FIXED,
-   STRETCH=BOTH,
-   SCROLLBARS=NONE
-;
 DATEEDIT cd=FORMONLY.selected_date;
+
 END
