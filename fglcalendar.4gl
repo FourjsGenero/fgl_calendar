@@ -525,37 +525,37 @@ PRIVATE FUNCTION _create_styles(id, root_svg)
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].day_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  0.3 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.3" )
         CALL attr.addAttribute(SVGATT_STROKE,        "gray" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  0.5 )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  "0.5" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayout_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  0.3 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.3" )
         CALL attr.addAttribute(SVGATT_STROKE,        "gray" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  0.5 )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  "0.5" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_out",attr) )
  
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daysel_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  0.5 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.5" )
         CALL attr.addAttribute(SVGATT_STROKE,        "red" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  0.5 )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  "0.5" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_selected",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daycur_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  0.7 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.7" )
         CALL attr.addAttribute(SVGATT_STROKE,        "red" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  0.2 )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  "0.2" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_today",attr) )
  
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayoff_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  0.3 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.3" )
         CALL attr.addAttribute(SVGATT_STROKE,        "gray" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  0.5 )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  "0.5" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_off",attr) )
 
       WHEN FGLCALENDAR_TYPE_ICON
@@ -579,37 +579,37 @@ PRIVATE FUNCTION _create_styles(id, root_svg)
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].day_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 1 )
-        CALL attr.addAttribute(SVGATT_STROKE, "white" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 4.0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "1.0" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "white" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "4.0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayout_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 1 )
-        CALL attr.addAttribute(SVGATT_STROKE, "white" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 4.0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "1.0" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "white" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "4.0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_out",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daysel_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 1 )
-        CALL attr.addAttribute(SVGATT_STROKE, "white" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 4.0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "1.0" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "white" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "4.0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_selected",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daycur_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 1 )
-        CALL attr.addAttribute(SVGATT_STROKE, "white" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 2.5 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "1.0" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "white" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "2.5" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_today",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayoff_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 1 )
-        CALL attr.addAttribute(SVGATT_STROKE, "white" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 4.0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "1.0" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "white" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "4.0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_off",attr) )
 
       WHEN FGLCALENDAR_TYPE_TEXT
@@ -633,34 +633,34 @@ PRIVATE FUNCTION _create_styles(id, root_svg)
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].day_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayout_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_out",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daysel_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE, "black" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 1.0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "black" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "1.0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_selected",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daycur_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE, "black" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 1.0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "black" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "1.0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_today",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayoff_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_off",attr) )
 
       WHEN FGLCALENDAR_TYPE_DOTS
@@ -684,34 +684,34 @@ PRIVATE FUNCTION _create_styles(id, root_svg)
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].day_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayout_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_out",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daysel_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE, "black" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 1.0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "black" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "1.0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_selected",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daycur_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE, "black" )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 1.0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "black" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "1.0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_today",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayoff_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY, 0.2 )
-        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, 0 )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_off",attr) )
 
     END CASE
@@ -804,6 +804,12 @@ FUNCTION display(id, cy, cm)
            cm SMALLINT
     CALL _check_id(id)
     CALL _draw_calendar(id, cy, cm)
+END FUNCTION
+
+PRIVATE FUNCTION isodec(v)
+    DEFINE v DECIMAL(32,10) -- Warning: must not produce exponent notation!
+    -- FIXME: Need a utility function (FGL-4196)
+    RETURN util.JSON.stringify(v)
 END FUNCTION
 
 PRIVATE FUNCTION _is_leap_year(y)
@@ -971,11 +977,11 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                   WHEN FGLCALENDAR_TYPE_DEFAULT
                        LET n = fglsvgcanvas.rect( tx, ty, 8, 8, NULL, NULL )
                   WHEN FGLCALENDAR_TYPE_ICON
-                       LET n = fglsvgcanvas.path( -- FIXME ? Why not rect?
+                       LET n = fglsvgcanvas.path( -- Triangle...
                                      SFMT("M%1 %2 L%3 %4 L%5 %6 Z",
-                                           tx, ty,
-                                           tx+16, ty,
-                                           tx, ty+16
+                                           isodec(tx)   , isodec(ty)   ,
+                                           isodec(tx+16), isodec(ty)   ,
+                                           isodec(tx)   , isodec(ty+16)
                                          )
                                )
                   WHEN FGLCALENDAR_TYPE_TEXT

@@ -26,7 +26,7 @@ MAIN
 
     LET cid = fglcalendar.create("formonly.calendar")
 
-    LET rec.curr_type = FGLCALENDAR_TYPE_ICON
+    LET rec.curr_type = FGLCALENDAR_TYPE_DEFAULT
     CALL set_type(cid, rec.curr_type)
 
     LET rec.curr_theme = FGLCALENDAR_THEME_DEFAULT
