@@ -116,9 +116,9 @@ FUNCTION set_type(cid,type)
     DEFINE cid, type SMALLINT
     CALL fglcalendar.setViewType(cid, type)
     IF type == FGLCALENDAR_TYPE_DEFAULT THEN
-       CALL fglcalendar.setDayNames(cid, "Lun|Mar|Mer|Jeu|Ven|Sam|Dim")
+       CALL fglcalendar.setDayNames(cid, "Mon|Tue|Wed|Thu|Fri|Sat|Sun")
     ELSE
-       CALL fglcalendar.setDayNames(cid, "L|M|M|J|V|S|D")
+       CALL fglcalendar.setDayNames(cid, "M|T|W|T|F|S|S")
     END IF
 END FUNCTION
 
