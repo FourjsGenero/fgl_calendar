@@ -154,7 +154,7 @@ FUNCTION setColorTheme(id, theme)
         LET calendars[id].day_cell_color    = "#AAFF99"
         LET calendars[id].daycur_cell_color = "#AA6655"
         LET calendars[id].dayoff_cell_color = "#FFAA99"
-        LET calendars[id].daysel_cell_color = "#FFFF99"
+        LET calendars[id].daysel_cell_color = "#FFFF77"
       WHEN FGLCALENDAR_THEME_SAHARA
         LET calendars[id].day_cell_color    = "#FFD700"
         LET calendars[id].daycur_cell_color = "#FFFF00"
@@ -872,11 +872,11 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
            view_month SMALLINT
     DEFINE sx, sy DECIMAL,
            tx, ty DECIMAL,
-           grid, t, n om.DomNode,
+           grid, cells, selcl, dnums, decos, t, n om.DomNode,
            gcol, glin SMALLINT,
            text_x_offset, text_y_offset DECIMAL,
            text_x_align, text_y_align BOOLEAN,
-           pass, y, m, f, r SMALLINT,
+           y, m, f, r SMALLINT,
            month_len, prev_month_len SMALLINT,
            day_num SMALLINT,
            day_date DATE,
@@ -913,6 +913,13 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
         LET text_y_align = FALSE
     END CASE
 
+    LET f = _first_day_position(view_year, view_month)
+    IF f < 5 THEN
+       LET day_date = MDY(view_month, 1, view_year) -(f+6)
+    ELSE
+       LET day_date = MDY(view_month, 1, view_year) -(f-1)
+    END IF
+
     IF calendars[id].show_daynames THEN
        FOR gcol = 1 TO CAL_GRID_DAYS
            LET tx = ((gcol-1) * sx) + (sx/2)
@@ -927,18 +934,22 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
        END FOR
     END IF
 
-    FOR pass=1 TO 2
+    LET dnums = fglsvgcanvas.g("calendar_dnums")
+    CALL grid.appendChild(dnums)
 
-      LET f = _first_day_position(view_year, view_month)
-      IF f < 5 THEN
-         LET day_date = MDY(view_month, 1, view_year) -(f+6)
-      ELSE
-         LET day_date = MDY(view_month, 1, view_year) -(f-1)
-      END IF
+    LET decos = fglsvgcanvas.g("calendar_decos")
+    CALL grid.appendChild(decos)
 
-      FOR glin = 1 TO CAL_GRID_WEEKS
+    -- Draw clickable rectangles at the end
+    LET cells = fglsvgcanvas.g("calendar_cells")
+    CALL grid.appendChild(cells)
+    -- To make selected cell borders appear on top of non-selected
+    LET selcl = fglsvgcanvas.g("calendar_selcl")
+    CALL grid.appendChild(selcl)
 
-        IF pass==1 AND calendars[id].show_weeknums THEN
+    FOR glin = 1 TO CAL_GRID_WEEKS
+
+        IF calendars[id].show_weeknums THEN
            LET tx = - (calendars[id].text_size * 1.2)
            LET ty = ((glin-1) * sy) + (sy/2)
            LET t = fglsvgcanvas.text( tx, ty,
@@ -950,14 +961,13 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
         END IF
 
         FOR gcol = 1 TO CAL_GRID_DAYS
+
             LET tx = (gcol-1) * sx
             LET ty = (glin-1) * sy
 
             LET sd = isSelectedDate(id, day_date)
 
             LET day_num = DAY(day_date)
-
-            LET cell_class = NULL
 
             IF MONTH(day_date) != view_month THEN
                LET dayn_class = "grid_day_num_out"
@@ -971,40 +981,8 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                END IF
             END IF
 
-            IF pass==1 THEN
-               IF calendars[id].show_today AND day_date==TODAY THEN
-                  CASE calendars[id].cal_type
-                  WHEN FGLCALENDAR_TYPE_DEFAULT
-                       LET n = fglsvgcanvas.rect( tx, ty, 8, 8, NULL, NULL )
-                  WHEN FGLCALENDAR_TYPE_ICON
-                       LET n = fglsvgcanvas.path( -- Triangle...
-                                     SFMT("M%1 %2 L%3 %4 L%5 %6 Z",
-                                           isodec(tx)   , isodec(ty)   ,
-                                           isodec(tx+16), isodec(ty)   ,
-                                           isodec(tx)   , isodec(ty+16)
-                                         )
-                               )
-                  WHEN FGLCALENDAR_TYPE_TEXT
-                       LET n = fglsvgcanvas.rect( tx, ty, sx, sy, NULL, NULL )
-                  WHEN FGLCALENDAR_TYPE_DOTS
-                       LET r = (sx/2)
-                       LET n = fglsvgcanvas.circle( tx+r, ty+r, (sx*0.45) )
-                  END CASE
-                  CALL n.setAttribute(SVGATT_CLASS,"grid_cell_today")
-                  CALL grid.appendChild(n)
-               END IF
-            END IF
-
-            IF pass==2 THEN 
-               IF sd THEN
-                  LET dayn_class = "grid_day_num"
-                  IF calendars[id].cal_type!=FGLCALENDAR_TYPE_DOTS THEN
-                     LET cell_class = "grid_cell_selected"
-                  END IF
-               ELSE
-                  LET dayn_class = NULL
-                  LET cell_class = NULL
-               END IF
+            IF sd AND calendars[id].cal_type!=FGLCALENDAR_TYPE_DOTS THEN
+               LET cell_class = "grid_cell_selected"
             END IF
 
             IF calendars[id].cal_type==FGLCALENDAR_TYPE_ICON
@@ -1012,10 +990,24 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                LET cell_class = NULL
             END IF
 
-            IF ( (pass==1 AND NOT sd) OR (pass==2 AND sd) )
-               AND cell_class IS NOT NULL
-            THEN
-               IF calendars[id].show_daynums THEN
+            IF calendars[id].show_today AND day_date==TODAY THEN
+               CASE
+                  WHEN calendars[id].cal_type==FGLCALENDAR_TYPE_DEFAULT
+                       LET n = fglsvgcanvas.rect( tx, ty, 8, 8, NULL, NULL )
+                       CALL n.setAttribute(SVGATT_CLASS,"grid_cell_today")
+                       CALL cells.appendChild(n)
+                  WHEN calendars[id].cal_type==FGLCALENDAR_TYPE_TEXT
+                    OR calendars[id].cal_type==FGLCALENDAR_TYPE_DOTS
+                       LET r = (sx/2)
+                       LET n = fglsvgcanvas.circle( tx+r, ty+r, (sx*0.45) )
+                       CALL n.setAttribute(SVGATT_CLASS,"grid_cell_today")
+                       CALL cells.appendChild(n)
+               END CASE
+            END IF
+
+            IF cell_class IS NOT NULL THEN
+               IF calendars[id].show_daynums
+               AND calendars[id].cal_type!=FGLCALENDAR_TYPE_ICON THEN
                   LET t = fglsvgcanvas.text(
                                 tx + text_x_offset,
                                 ty + text_y_offset,
@@ -1028,24 +1020,49 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                   IF text_y_align THEN
                      CALL t.setAttribute("alignment-baseline","central")
                   END IF
-                  CALL grid.appendChild(t)
+                  CALL dnums.appendChild(t)
                END IF
+
                IF sd AND calendars[id].cal_type==FGLCALENDAR_TYPE_DOTS THEN
                   LET n = fglsvgcanvas.circle( tx+(sx/2), ty+(sy*0.8), 2 )
-                  CALL grid.appendChild(n)
+                  CALL decos.appendChild(n)
                END IF
-               -- Must draw rect at the end for clickable element
+
                LET n = fglsvgcanvas.rect( tx, ty, sx, sy, NULL, NULL )
                CALL n.setAttribute( SVGATT_CLASS, cell_class )
                CALL n.setAttribute("id", SFMT("day_%1", (day_date USING "yyyy-mm-dd")) )
                CALL n.setAttribute("onclick", "elem_clicked(this)" )
-               CALL grid.appendChild(n)
+               IF sd THEN
+                  CALL selcl.appendChild(n)
+               ELSE
+                  CALL cells.appendChild(n)
+               END IF
+
+               IF calendars[id].show_today AND day_date==TODAY
+               AND calendars[id].cal_type==FGLCALENDAR_TYPE_ICON THEN
+                   LET n = fglsvgcanvas.path( -- Triangle...
+                                     SFMT("M%1 %2 L%3 %4 L%5 %6 Z",
+                                           isodec(tx)   , isodec(ty)   ,
+                                           isodec(tx+16), isodec(ty)   ,
+                                           isodec(tx)   , isodec(ty+16)
+                                         )
+                               )
+                   CALL n.setAttribute("id", SFMT("day_%1", (day_date USING "yyyy-mm-dd")) )
+                   CALL n.setAttribute("onclick", "elem_clicked(this)" )
+                   CALL n.setAttribute(SVGATT_CLASS,"grid_cell_today")
+                   IF sd THEN
+                      CALL selcl.appendChild(n)
+                   ELSE
+                      CALL cells.appendChild(n)
+                   END IF
+               END IF
+
             END IF
 
             LET day_date = day_date + 1
 
         END FOR
-      END FOR
+
     END FOR
 
 END FUNCTION
