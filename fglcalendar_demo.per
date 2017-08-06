@@ -13,6 +13,7 @@ GRID
 [           ][swn                    ]
 [           ] -----------------------
 [           ] Date:  [cd             ]
+[           ] [clr                   ]
 [           ]<                       >
 }
 END
@@ -43,5 +44,6 @@ CHECKBOX sdu=FORMONLY.show_daynums, NOT NULL,
 CHECKBOX swn=FORMONLY.show_weeknums, NOT NULL,
    TEXT="Show week numbers";
 DATEEDIT cd=FORMONLY.selected_date;
+BUTTON clr:clear, TEXT="Clear";
 
 END

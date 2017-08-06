@@ -99,6 +99,10 @@ MAIN
            END IF
            CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
 
+        ON ACTION clear
+           CALL fglcalendar.clearSelectedDates(cid)
+           CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
+
     END INPUT
 
     CALL fglcalendar.destroy(cid)
