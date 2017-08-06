@@ -4,22 +4,27 @@ END
 LAYOUT
 GRID
 {
-[cal        ]<GROUP g1               >
-[           ] Type: [ct              ]
+[cm    |cy  ]<GROUP g1               >
+[cal        ] Type: [ct              ]
 [           ] Theme:[cc              ]
-[           ] Date: [cy       ][cm   ]
+[           ] -----------------------
 [           ][sdn                    ]
 [           ][sdu                    ]
 [           ][swn                    ]
 [           ] -----------------------
 [           ] Date:  [cd             ]
-[           ] [clr                   ]
 [           ]<                       >
 }
 END
 END
 
 ATTRIBUTES
+
+COMBOBOX cm=FORMONLY.curr_month, NOT NULL,
+   STYLE="bigfont",
+   INITIALIZER=cmb_init_month;
+SPINEDIT cy=FORMONLY.curr_year, NOT NULL,
+   STYLE="bigfont";
 
 WEBCOMPONENT cal=FORMONLY.calendar, TABINDEX=0,
    COMPONENTTYPE="fglsvgcanvas",
@@ -34,9 +39,6 @@ COMBOBOX ct=FORMONLY.curr_type, NOT NULL,
    INITIALIZER=cmb_init_types;
 COMBOBOX cc=FORMONLY.curr_theme, NOT NULL,
    INITIALIZER=cmb_init_themes;
-SPINEDIT cy=FORMONLY.curr_year, NOT NULL;
-COMBOBOX cm=FORMONLY.curr_month, NOT NULL,
-   INITIALIZER=cmb_init_month;
 CHECKBOX sdn=FORMONLY.show_daynames, NOT NULL,
    TEXT="Show day names";
 CHECKBOX sdu=FORMONLY.show_daynums, NOT NULL,
@@ -44,6 +46,5 @@ CHECKBOX sdu=FORMONLY.show_daynums, NOT NULL,
 CHECKBOX swn=FORMONLY.show_weeknums, NOT NULL,
    TEXT="Show week numbers";
 DATEEDIT cd=FORMONLY.selected_date;
-BUTTON clr:clear, TEXT="Clear";
 
 END
