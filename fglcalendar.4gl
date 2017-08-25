@@ -387,7 +387,7 @@ END FUNCTION
 #+ CALL setDayNames(id, "M|T|W|T|F|S|S")
 #+
 #+ @param id    The calendar id
-#+ @param list  The list of day names
+#+ @param names The list of day names
 #+
 PUBLIC FUNCTION setDayNames(id, names)
     DEFINE id SMALLINT, names STRING
