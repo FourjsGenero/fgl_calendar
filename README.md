@@ -26,9 +26,10 @@ This library is under [MIT license](./LICENSE)
 
 1. make run
 
-## Start JGAS
+## Run with GBC/JGAS
 
 1. make runjgas
+2. Open a web browser and enter the URL ``http://localhost:8080/``
 
 ## Compilation in Genero Studio
 
