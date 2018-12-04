@@ -1,19 +1,28 @@
 ACTION DEFAULTS
   ACTION calendar_selection (DEFAULTVIEW=NO)
 END
-LAYOUT
+LAYOUT (TEXT="FGL Calendar demo")
 GRID
 {
-[cm    |cy  ]<GROUP g1               >
-[cal        ] Type: [ct              ]
-[           ] Theme:[cc              ]
-[           ] -----------------------
-[           ][sdn                    ]
-[           ][sdu                    ]
-[           ][swn                    ]
-[           ] -----------------------
-[           ] Date:  [cd             ]
-[           ]<                       >
+[cm            |cy      ]
+[cal                    ]
+[                       ]
+[                       ]
+[                       ]
+[                       ]
+[                       ]
+[                       ]
+[                       ]
+<GROUP g1               >
+ Type: [ct              ]
+ Theme:[cc              ]
+ -----------------------
+[sdn                    ]
+[sdu                    ]
+[swn                    ]
+ -----------------------
+ Date:  [cd             ]
+<                       >
 }
 END
 END
@@ -24,6 +33,7 @@ COMBOBOX cm=FORMONLY.curr_month, NOT NULL,
    STYLE="bigfont",
    INITIALIZER=cmb_init_month;
 SPINEDIT cy=FORMONLY.curr_year, NOT NULL,
+   VALUEMIN=1900, VALUEMAX=2200,
    STYLE="bigfont";
 
 WEBCOMPONENT cal=FORMONLY.calendar, TABINDEX=0,

@@ -219,6 +219,6 @@ PRIVATE FUNCTION add_presentation_styles()
     --
     LET nn = add_style(sl, ".bigfont")
     IF nn IS NOT NULL THEN
-       CALL set_style_attribute(nn, "fontSize", "large" )
+       CALL set_style_attribute(nn, "fontSize", "1.2em" )
     END IF
 END FUNCTION

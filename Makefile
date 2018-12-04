@@ -5,7 +5,7 @@ BINS=\
  fglcalendar_demo.42m\
  fglcalendar_demo.42f
 
-all: $(BINS) doc
+all: $(BINS)
 
 run:: $(BINS)
 	fglrun fglcalendar_demo

@@ -17,6 +17,7 @@ This library is under [MIT license](./LICENSE)
 * Genero Desktop Client 3.10+
 * Genero Studio 3.10+
 * GNU Make
+* To build the DOC, you need xsltproc on UNIX.
 
 ## Compilation from command line
 
@@ -35,6 +36,12 @@ This library is under [MIT license](./LICENSE)
 
 1. Load the *fglcalendar_demo.4pw* project
 2. Build the project
+
+## Rebuilding the API doc
+
+1. make doc
+
+WARNING: You need xsltproc on UNIX-like systems, cscript.exe on Windows.
 
 ## Programming API
 
