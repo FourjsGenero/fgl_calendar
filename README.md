@@ -12,11 +12,11 @@ This library is under [MIT license](./LICENSE)
 
 ## Prerequisites
 
-* Genero BDL 3.10+
+* Genero BDL 3.20+
 * The fglsvgcanvas web component (ships with Genero BDL 3.10)
 * Genero Browser Client 1.00.52+
-* Genero Desktop Client 3.10+
-* Genero Studio 3.10+
+* Genero Desktop Client 3.20+
+* Genero Studio 3.20+
 * GNU Make
 * To build the DOC, you need xsltproc on UNIX.
 
