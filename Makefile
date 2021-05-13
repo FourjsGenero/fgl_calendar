@@ -15,10 +15,10 @@ doc:
 	mv fglcalendar.html docs
 
 fglcalendar.42m: fglcalendar.4gl
-	fglcomp -M fglcalendar.4gl
+	fglcomp -Wall -M fglcalendar.4gl
 
 fglcalendar_demo.42m: fglcalendar_demo.4gl
-	fglcomp -M fglcalendar_demo.4gl
+	fglcomp -Wall -M fglcalendar_demo.4gl
 
 fglcalendar_demo.42f: fglcalendar_demo.per
 	fglform -M fglcalendar_demo.per
