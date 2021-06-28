@@ -1031,7 +1031,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                LET n = fglsvgcanvas.rect( tx, ty, sx, sy, NULL, NULL )
                CALL n.setAttribute( SVGATT_CLASS, cell_class )
                CALL n.setAttribute("id", SFMT("day_%1", (day_date USING "yyyy-mm-dd")) )
-               CALL n.setAttribute("onclick", "elem_clicked(this)" )
+               CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
                IF sd THEN
                   CALL selcl.appendChild(n)
                ELSE
@@ -1048,7 +1048,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                                          )
                                )
                    CALL n.setAttribute("id", SFMT("day_%1", (day_date USING "yyyy-mm-dd")) )
-                   CALL n.setAttribute("onclick", "elem_clicked(this)" )
+                   CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
                    CALL n.setAttribute(SVGATT_CLASS,"grid_cell_today")
                    IF sd THEN
                       CALL selcl.appendChild(n)
