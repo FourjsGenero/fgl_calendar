@@ -1,5 +1,3 @@
-IMPORT util
-
 IMPORT FGL fglcalendar
 
 DEFINE rec RECORD
