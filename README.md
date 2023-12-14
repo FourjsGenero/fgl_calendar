@@ -50,3 +50,4 @@ See [Genero calendar documentation](http://htmlpreview.github.io/?github.com/Fou
 
 ## Bug fixes:
 
+- none
