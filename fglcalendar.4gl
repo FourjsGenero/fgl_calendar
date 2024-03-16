@@ -514,12 +514,12 @@ PRIVATE FUNCTION _create_styles(id, root_svg)
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FONT_FAMILY,   "Sans" )
-        CALL attr.addAttribute(SVGATT_FONT_SIZE,     "0.3em" )
+        CALL attr.addAttribute(SVGATT_FONT_SIZE,     "0.4em" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_day_num",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FONT_FAMILY,   "Sans" )
-        CALL attr.addAttribute(SVGATT_FONT_SIZE,     "0.3em" )
+        CALL attr.addAttribute(SVGATT_FONT_SIZE,     "0.4em" )
         CALL attr.addAttribute(SVGATT_FILL,          "gray" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_day_num_out",attr) )
 
@@ -539,14 +539,14 @@ PRIVATE FUNCTION _create_styles(id, root_svg)
  
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daysel_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.5" )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.2" )
         CALL attr.addAttribute(SVGATT_STROKE,        "red" )
         CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  "0.5" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_selected",attr) )
 
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daycur_cell_color )
-        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.7" )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.2" )
         CALL attr.addAttribute(SVGATT_STROKE,        "red" )
         CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  "0.2" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_today",attr) )
@@ -896,6 +896,11 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
     LET sy = calendars[id].cell_height
 
     CASE calendars[id].cal_type
+      WHEN FGLCALENDAR_TYPE_DEFAULT
+        LET text_x_offset = 2
+        LET text_y_offset = 7
+        LET text_x_align = FALSE
+        LET text_y_align = FALSE
       WHEN FGLCALENDAR_TYPE_TEXT
         LET text_x_offset = sx / 2
         LET text_y_offset = sy / 2
@@ -993,7 +998,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
             IF calendars[id].show_today AND day_date==TODAY THEN
                CASE
                   WHEN calendars[id].cal_type==FGLCALENDAR_TYPE_DEFAULT
-                       LET n = fglsvgcanvas.rect( tx, ty, 8, 8, NULL, NULL )
+                       LET n = fglsvgcanvas.rect( tx, ty, 12, 10, NULL, NULL )
                        CALL n.setAttribute(SVGATT_CLASS,"grid_cell_today")
                        CALL cells.appendChild(n)
                   WHEN calendars[id].cal_type==FGLCALENDAR_TYPE_TEXT
