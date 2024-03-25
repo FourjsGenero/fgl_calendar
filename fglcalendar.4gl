@@ -10,6 +10,7 @@ PUBLIC CONSTANT FGLCALENDAR_TYPE_DEFAULT = 1
 PUBLIC CONSTANT FGLCALENDAR_TYPE_ICON    = 2
 PUBLIC CONSTANT FGLCALENDAR_TYPE_TEXT    = 3
 PUBLIC CONSTANT FGLCALENDAR_TYPE_DOTS    = 4
+PUBLIC CONSTANT FGLCALENDAR_TYPE_SNAKE   = 5
 
 PUBLIC CONSTANT FGLCALENDAR_THEME_DEFAULT = 1
 PUBLIC CONSTANT FGLCALENDAR_THEME_SAHARA  = 2
@@ -30,6 +31,7 @@ PRIVATE TYPE t_calendar RECORD
                dayout_cell_color STRING,
                dayoff_cell_color STRING,
                daysel_cell_color STRING,
+               daylim_cell_color STRING,
                show_daynames BOOLEAN,
                show_daynums BOOLEAN,
                show_today BOOLEAN,
@@ -134,7 +136,7 @@ END FUNCTION
 #+ Defines the view type of the calendar.
 #+
 #+ @param id   The calendar id
-#+ @param type The view type, can be: FGLCALENDAR_TYPE_DEFAULT, FGLCALENDAR_TYPE_ICON, FGLCALENDAR_TYPE_TEXT, FGLCALENDAR_TYPE_DOTS
+#+ @param type The view type, can be: FGLCALENDAR_TYPE_DEFAULT, FGLCALENDAR_TYPE_ICON, FGLCALENDAR_TYPE_TEXT, FGLCALENDAR_TYPE_DOTS, FGLCALENDAR_TYPE_SNAKE
 #+
 PUBLIC FUNCTION setViewType(id, type)
     DEFINE id SMALLINT, type SMALLINT
@@ -158,31 +160,37 @@ FUNCTION setColorTheme(id, theme)
         LET calendars[id].daycur_cell_color = "#AA6655"
         LET calendars[id].dayoff_cell_color = "#FFAA99"
         LET calendars[id].daysel_cell_color = "#FFFF77"
+        LET calendars[id].daylim_cell_color = "#F0F049"
       WHEN FGLCALENDAR_THEME_SAHARA
         LET calendars[id].day_cell_color    = "#FFD700"
         LET calendars[id].daycur_cell_color = "#FFFF00"
         LET calendars[id].dayoff_cell_color = "#CD9B1D"
         LET calendars[id].daysel_cell_color = "#FFA500"
+        LET calendars[id].daylim_cell_color = "#FFA555"
       WHEN FGLCALENDAR_THEME_PACIFIC
         LET calendars[id].day_cell_color    = "#6495ED"
         LET calendars[id].daycur_cell_color = "#00AAFF"
         LET calendars[id].dayoff_cell_color = "#6C7B8B"
         LET calendars[id].daysel_cell_color = "#40E0D0"
+        LET calendars[id].daylim_cell_color = "#40E055"
       WHEN FGLCALENDAR_THEME_AMAZON
         LET calendars[id].day_cell_color    = "#90EE90"
         LET calendars[id].daycur_cell_color = "#54FF9F"
         LET calendars[id].dayoff_cell_color = "#6B8E23"
         LET calendars[id].daysel_cell_color = "#228033"
+        LET calendars[id].daylim_cell_color = "#228055"
       WHEN FGLCALENDAR_THEME_VIOLA
         LET calendars[id].day_cell_color    = "#FFC0CB"
         LET calendars[id].daycur_cell_color = "#FF3E96"
         LET calendars[id].dayoff_cell_color = "#800080"
         LET calendars[id].daysel_cell_color = "#FF69B4"
+        LET calendars[id].daylim_cell_color = "#FF6955"
       WHEN FGLCALENDAR_THEME_CHILI
         LET calendars[id].day_cell_color    = "#FF995B"
         LET calendars[id].daycur_cell_color = "#FFDEAD"
         LET calendars[id].dayoff_cell_color = "#C76114"
         LET calendars[id].daysel_cell_color = "#FF3400"
+        LET calendars[id].daylim_cell_color = "#FF3455"
     END CASE
 END FUNCTION
 
@@ -381,18 +389,35 @@ END FUNCTION
 #+
 PUBLIC FUNCTION isSelectedDate(id, value)
     DEFINE id SMALLINT, value DATE
-    DEFINE x, l INTEGER
+    DEFINE r BOOLEAN, e CHAR(1)
     CALL _check_id(id)
-    LET l = calendars[id].selected_dates.getLength()
-    FOR x = 1 TO l
-       IF value >= calendars[id].selected_dates[x].value_start
-       AND value <= calendars[id].selected_dates[x].value_end THEN
-          RETURN TRUE
-       END IF
-    END FOR
-    RETURN FALSE
+    CALL _checkSelectedDate(id, value) RETURNING r, e
+    RETURN r
 END FUNCTION
 
+PRIVATE FUNCTION _checkSelectedDate(id, value)
+    DEFINE id SMALLINT, value DATE
+    DEFINE x, l INTEGER
+    LET l = calendars[id].selected_dates.getLength()
+    FOR x = 1 TO l
+       IF  value >= calendars[id].selected_dates[x].value_start
+       AND value <= calendars[id].selected_dates[x].value_end
+       THEN
+          CASE
+          WHEN value == calendars[id].selected_dates[x].value_start
+           AND value == calendars[id].selected_dates[x].value_end
+             RETURN TRUE, "U"
+          WHEN value == calendars[id].selected_dates[x].value_start
+             RETURN TRUE, "S"
+          WHEN value == calendars[id].selected_dates[x].value_end
+             RETURN TRUE, "E"
+          OTHERWISE
+             RETURN TRUE, "M"
+          END CASE
+       END IF
+    END FOR
+    RETURN FALSE, NULL
+END FUNCTION
 
 -- Raises an error that can be trapped in callers because of WHENEVER ERROR RAISE
 PRIVATE FUNCTION _check_id(id)
@@ -518,6 +543,17 @@ PUBLIC FUNCTION setDaySelectedCellColor(id, color)
     LET calendars[id].daysel_cell_color = color
 END FUNCTION
 
+#+ Defines the color for days on range limits
+#+
+#+ @param id    The calendar id
+#+ @param color The color (#RRGGBB)
+#+
+PUBLIC FUNCTION setRangeLimitCellColor(id, color)
+    DEFINE id SMALLINT, color STRING
+    CALL _check_id(id)
+    LET calendars[id].daylim_cell_color = color
+END FUNCTION
+
 PRIVATE FUNCTION _week_day_name(id, n)
     DEFINE id SMALLINT, n SMALLINT
     CALL _check_id(id)
@@ -546,6 +582,8 @@ PRIVATE FUNCTION _set_text_size(id)
       WHEN FGLCALENDAR_TYPE_TEXT
         LET calendars[id].text_size = 20
       WHEN FGLCALENDAR_TYPE_DOTS
+        LET calendars[id].text_size = 20
+      WHEN FGLCALENDAR_TYPE_SNAKE
         LET calendars[id].text_size = 20
     END CASE
 END FUNCTION
@@ -776,6 +814,62 @@ PRIVATE FUNCTION _create_styles(id, root_svg)
         CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_off",attr) )
 
+      WHEN FGLCALENDAR_TYPE_SNAKE
+
+        CALL attr.clear()
+        CALL attr.addAttribute(SVGATT_FONT_FAMILY,   "Sans" )
+        CALL attr.addAttribute(SVGATT_FONT_SIZE,     "0.6em" )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_day_name",attr) )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_week_num",attr) )
+
+        CALL attr.clear()
+        CALL attr.addAttribute(SVGATT_FONT_FAMILY,   "Sans" )
+        CALL attr.addAttribute(SVGATT_FONT_SIZE,     "0.7em" )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_day_num",attr) )
+
+        CALL attr.clear()
+        CALL attr.addAttribute(SVGATT_FONT_FAMILY,   "Sans" )
+        CALL attr.addAttribute(SVGATT_FONT_SIZE,     "0.7em" )
+        CALL attr.addAttribute(SVGATT_FILL,          "gray" )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_day_num_out",attr) )
+
+        CALL attr.clear()
+        CALL attr.addAttribute(SVGATT_FILL, calendars[id].day_cell_color )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell",attr) )
+
+        CALL attr.clear()
+        CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayout_cell_color )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_out",attr) )
+
+        CALL attr.clear()
+        CALL attr.addAttribute(SVGATT_FILL, calendars[id].daysel_cell_color )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_selected",attr) )
+
+        CALL attr.clear()
+        CALL attr.addAttribute(SVGATT_FILL, calendars[id].daycur_cell_color )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_today",attr) )
+
+        CALL attr.clear()
+        CALL attr.addAttribute(SVGATT_FILL, calendars[id].daylim_cell_color )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.4" )
+        CALL attr.addAttribute(SVGATT_STROKE,       "black" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0.2" )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_edge",attr) )
+
+        CALL attr.clear()
+        CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayoff_cell_color )
+        CALL attr.addAttribute(SVGATT_FILL_OPACITY, "0.2" )
+        CALL attr.addAttribute(SVGATT_STROKE_WIDTH, "0" )
+        CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_off",attr) )
+
     END CASE
 
     LET defs = fglsvgcanvas.defs( NULL )
@@ -942,8 +1036,10 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
            month_len, prev_month_len SMALLINT,
            day_num SMALLINT,
            day_date DATE,
+           day_id STRING,
            dayn_class, cell_class STRING,
-           is_selected BOOLEAN
+           is_selected BOOLEAN, edge_flag CHAR(1),
+           tmp, phm_l, phm_r STRING
 
     CALL _create_styles(id, root_svg)
 
@@ -973,6 +1069,11 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
         LET text_y_offset = sy - (sy * 0.5)
         LET text_x_align = TRUE
         LET text_y_align = FALSE
+      WHEN FGLCALENDAR_TYPE_SNAKE
+        LET text_x_offset = sx / 2
+        LET text_y_offset = sy / 2
+        LET text_x_align = TRUE
+        LET text_y_align = TRUE
       OTHERWISE
         LET text_x_offset = 1
         LET text_y_offset = 5
@@ -1029,10 +1130,11 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
 
         FOR gcol = 1 TO CAL_GRID_DAYS
 
+            LET day_id = SFMT("day_%1", (day_date USING "yyyy-mm-dd"))
             LET tx = (gcol-1) * sx
             LET ty = (glin-1) * sy
 
-            LET is_selected = isSelectedDate(id, day_date)
+            CALL _checkSelectedDate(id, day_date) RETURNING is_selected, edge_flag
 
             LET day_num = DAY(day_date)
 
@@ -1049,7 +1151,13 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
             END IF
 
             IF is_selected AND calendars[id].cal_type!=FGLCALENDAR_TYPE_DOTS THEN
-               LET cell_class = "grid_cell_selected"
+               IF calendars[id].cal_type==FGLCALENDAR_TYPE_SNAKE
+               AND edge_flag MATCHES "[SEU]"
+               THEN
+                  LET cell_class = cell_class
+               ELSE
+                  LET cell_class = "grid_cell_selected"
+               END IF
             END IF
 
             IF calendars[id].cal_type==FGLCALENDAR_TYPE_ICON
@@ -1065,6 +1173,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                        CALL cells.appendChild(n)
                   WHEN calendars[id].cal_type==FGLCALENDAR_TYPE_TEXT
                     OR calendars[id].cal_type==FGLCALENDAR_TYPE_DOTS
+                    OR calendars[id].cal_type==FGLCALENDAR_TYPE_SNAKE
                        LET r = (sx/2)
                        LET n = fglsvgcanvas.circle( tx+r, ty+r, (sx*0.45) )
                        CALL n.setAttribute(SVGATT_CLASS,"grid_cell_today")
@@ -1095,26 +1204,56 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                   CALL decos.appendChild(n)
                END IF
 
-               LET n = fglsvgcanvas.rect( tx, ty, sx, sy, NULL, NULL )
-               CALL n.setAttribute( SVGATT_CLASS, cell_class )
-               CALL n.setAttribute("id", SFMT("day_%1", (day_date USING "yyyy-mm-dd")) )
-               CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
-               IF is_selected THEN
+               IF is_selected AND calendars[id].cal_type==FGLCALENDAR_TYPE_SNAKE
+               AND edge_flag MATCHES "[SEU]"
+               THEN
+
+                  LET r = (sx/2)
+
+                  LET tmp = SFMT("M %1 %2", isodec(tx+r), isodec(ty)),
+                            SFMT(" A %1 %1, 0, 0, %%1, %2 %3", isodec(r), isodec(tx+r), isodec(ty+2*r)),
+                            SFMT(" L %%2 %1 L %%2 %2 L %3 %2 Z", isodec(ty+2*r), isodec(ty), isodec(tx+r))
+                  LET phm_l = SFMT(tmp, 0, isodec(tx))
+                  LET n = fglsvgcanvas.path(phm_l)
+                  CALL n.setAttribute(SVGATT_CLASS,IIF(edge_flag MATCHES "[SU]",cell_class,"grid_cell_selected"))
+                  CALL n.setAttribute("id", day_id)
+                  CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
                   CALL selcl.appendChild(n)
-               ELSE
+                  LET phm_r = SFMT(tmp, 1, isodec(tx+2*r))
+                  LET n = fglsvgcanvas.path(phm_r)
+                  CALL n.setAttribute(SVGATT_CLASS,IIF(edge_flag MATCHES "[EU]",cell_class,"grid_cell_selected"))
+                  CALL n.setAttribute("id", day_id)
+                  CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
+                  CALL selcl.appendChild(n)
+
+                  LET n = fglsvgcanvas.circle( tx+r, ty+r, r )
+                  CALL n.setAttribute(SVGATT_CLASS,"grid_cell_edge")
+                  CALL n.setAttribute("id", day_id)
+                  CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
                   CALL cells.appendChild(n)
+
+               ELSE
+
+                  LET n = fglsvgcanvas.rect( tx, ty, sx, sy, NULL, NULL )
+                  CALL n.setAttribute( SVGATT_CLASS, cell_class )
+                  CALL n.setAttribute("id", day_id)
+                  CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
+                  IF is_selected THEN
+                     CALL selcl.appendChild(n)
+                  ELSE
+                     CALL cells.appendChild(n)
+                  END IF
+
                END IF
 
                IF calendars[id].show_today AND day_date==TODAY
                AND calendars[id].cal_type==FGLCALENDAR_TYPE_ICON THEN
-                   LET n = fglsvgcanvas.path( -- Triangle...
-                                     SFMT("M%1 %2 L%3 %4 L%5 %6 Z",
-                                           isodec(tx)   , isodec(ty)   ,
-                                           isodec(tx+16), isodec(ty)   ,
-                                           isodec(tx)   , isodec(ty+16)
+                   LET n = fglsvgcanvas.path(
+                                     SFMT("M %1 %2 L %3 %2 L %1 %4 Z",
+                                           isodec(tx), isodec(ty), isodec(tx+16), isodec(ty+16)
                                          )
                                )
-                   CALL n.setAttribute("id", SFMT("day_%1", (day_date USING "yyyy-mm-dd")) )
+                   CALL n.setAttribute("id", day_id)
                    CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
                    CALL n.setAttribute(SVGATT_CLASS,"grid_cell_today")
                    IF is_selected THEN

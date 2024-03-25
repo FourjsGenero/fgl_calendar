@@ -174,6 +174,7 @@ FUNCTION cmb_init_types(cmb)
     CALL cmb.addItem(FGLCALENDAR_TYPE_TEXT,    "Text")
     CALL cmb.addItem(FGLCALENDAR_TYPE_ICON,    "Icon")
     CALL cmb.addItem(FGLCALENDAR_TYPE_DOTS,    "Dots")
+    CALL cmb.addItem(FGLCALENDAR_TYPE_SNAKE,   "Snake")
 END FUNCTION
 
 FUNCTION cmb_init_themes(cmb)
