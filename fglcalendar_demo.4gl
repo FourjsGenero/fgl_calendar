@@ -3,24 +3,32 @@ IMPORT FGL fglcalendar
 DEFINE rec RECORD
                curr_type SMALLINT,
                curr_theme SMALLINT,
+               curr_mode SMALLINT,
                curr_year SMALLINT,
                curr_month SMALLINT,
                show_daynames BOOLEAN,
                show_daynums  BOOLEAN,
                show_weeknums BOOLEAN,
                calendar STRING,
-               selected_date DATE
+               selected_date_1 DATE,
+               selected_date_2 DATE
            END RECORD
+
+CONSTANT SM_SINGLE = 1
+CONSTANT SM_MULTI = 2
+CONSTANT SM_RANGE = 3
 
 MAIN
     DEFINE cid INTEGER
+    DEFINE sf CHAR(1)
+    DEFINE sd DATE
 
     CALL add_presentation_styles()
 
     OPEN FORM f1 FROM "fglcalendar_demo"
     DISPLAY FORM f1
 
-    OPTIONS FIELD ORDER FORM
+    OPTIONS FIELD ORDER FORM, INPUT WRAP
 
     CALL fglcalendar.initialize()
 
@@ -32,15 +40,16 @@ MAIN
     LET rec.curr_theme = FGLCALENDAR_THEME_DEFAULT
     CALL fglcalendar.setColorTheme(cid, rec.curr_theme)
 
+    LET rec.curr_mode = SM_MULTI
+
     LET rec.curr_year = YEAR(TODAY)
     LET rec.curr_month = MONTH(TODAY)
 
-    LET rec.selected_date = TODAY
-    CALL fglcalendar.addSelectedDate(cid, rec.selected_date)
-    CALL fglcalendar.addSelectedDate(cid, rec.selected_date-2)
-    CALL fglcalendar.addSelectedDate(cid, rec.selected_date-4)
-    CALL fglcalendar.addSelectedDate(cid, rec.selected_date+5)
-    CALL fglcalendar.addSelectedDate(cid, rec.selected_date+15)
+    LET rec.selected_date_1 = TODAY
+    LET rec.selected_date_2 = NULL
+    CALL fglcalendar.addSelectedDate(cid, rec.selected_date_1)
+    CALL fglcalendar.addSelectedDate(cid, rec.selected_date_1-2)
+    CALL fglcalendar.addSelectedDate(cid, rec.selected_date_1-4)
 
     LET rec.show_daynames = TRUE
     CALL fglcalendar.showDayNames(cid, rec.show_daynames)
@@ -63,6 +72,13 @@ MAIN
 
         ON CHANGE curr_theme
            CALL fglcalendar.setColorTheme(cid, rec.curr_theme)
+           CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
+
+        ON CHANGE curr_mode
+           LET sf = "F"
+           LET rec.selected_date_1 = NULL
+           LET rec.selected_date_2 = NULL
+           CALL fglcalendar.clearSelectedDates(cid)
            CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
 
         ON CHANGE curr_year
@@ -91,16 +107,48 @@ MAIN
            CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
 
         ON ACTION calendar_selection
-           LET rec.selected_date = fglcalendar.getSelectedDateFromValue(cid, rec.calendar)
-           IF fglcalendar.isSelectedDate(cid, rec.selected_date) THEN
-              CALL fglcalendar.removeSelectedDate(cid, rec.selected_date)
-           ELSE
-              CALL fglcalendar.addSelectedDate(cid, rec.selected_date)
-           END IF
+           LET sd = fglcalendar.getSelectedDateFromValue(cid, rec.calendar)
+           CASE rec.curr_mode
+           WHEN SM_SINGLE
+              LET rec.selected_date_1 = sd
+              LET rec.selected_date_2 = NULL
+              CALL fglcalendar.clearSelectedDates(cid)
+              CALL fglcalendar.addSelectedDate(cid, sd)
+           WHEN SM_MULTI
+              LET rec.selected_date_1 = sd
+              LET rec.selected_date_2 = NULL
+              IF fglcalendar.isSelectedDate(cid, sd) THEN
+                 CALL fglcalendar.removeSelectedDate(cid, sd)
+              ELSE
+                 CALL fglcalendar.addSelectedDate(cid, sd)
+              END IF
+           WHEN SM_RANGE
+              CASE
+              WHEN rec.selected_date_1 IS NULL OR sd < rec.selected_date_1
+                  LET rec.selected_date_1 = sd; LET sf = "E"
+              WHEN rec.selected_date_2 IS NULL OR sd > rec.selected_date_2
+                  LET rec.selected_date_2 = sd; LET sf = "S"
+              OTHERWISE
+                  IF sf == "S" THEN
+                      LET rec.selected_date_1 = sd; LET sf = "E"
+                  ELSE
+                      LET rec.selected_date_2 = sd; LET sf = "S"
+                  END IF
+              END CASE
+              CALL fglcalendar.clearSelectedDates(cid)
+              CALL fglcalendar.addSelectedDateRange(cid, rec.selected_date_1, rec.selected_date_2)
+           END CASE
            CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
 
         ON ACTION clear ATTRIBUTES(TEXT="Clear")
+           LET rec.selected_date_1 = NULL
+           LET rec.selected_date_2 = NULL
            CALL fglcalendar.clearSelectedDates(cid)
+           CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
+
+        ON CHANGE selected_date_1, selected_date_2
+           CALL fglcalendar.clearSelectedDates(cid)
+           CALL fglcalendar.addSelectedDateRange(cid, rec.selected_date_1, rec.selected_date_2)
            CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
 
     END INPUT
@@ -138,14 +186,21 @@ FUNCTION cmb_init_themes(cmb)
     CALL cmb.addItem(FGLCALENDAR_THEME_CHILI,   "Chili")
 END FUNCTION
 
+FUNCTION cmb_init_modes(cmb)
+    DEFINE cmb ui.ComboBox
+    CALL cmb.addItem(SM_SINGLE,"Single selection")
+    CALL cmb.addItem(SM_MULTI,"Multi selection")
+    CALL cmb.addItem(SM_RANGE,"Range selection")
+END FUNCTION
+
 FUNCTION cmb_init_month(cmb)
     DEFINE cmb ui.ComboBox
     DEFINE m SMALLINT
-    CALL cmb.addItem(0, "<--")
+    CALL cmb.addItem(0, "<<<")
     FOR m=1 TO 12
         CALL cmb.addItem(m, month_name(m))
     END FOR
-    CALL cmb.addItem(13, "-->")
+    CALL cmb.addItem(13, ">>>")
 END FUNCTION
 
 FUNCTION month_name(m)

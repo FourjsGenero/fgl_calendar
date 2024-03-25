@@ -1,7 +1,7 @@
 #+ Genero Calendar library
 #+
-#+ This library implements a set of functions to create a calendar area in a WEBCOMPONENT field. 
-#+ 
+#+ This library implements a set of functions to create a calendar area in a WEBCOMPONENT field.
+#+
 
 IMPORT util
 IMPORT FGL fglsvgcanvas
@@ -39,15 +39,18 @@ PRIVATE TYPE t_calendar RECORD
                cell_height SMALLINT,
                view_year SMALLINT,
                view_month SMALLINT,
-               selected_dates DYNAMIC ARRAY OF DATE
+               selected_dates DYNAMIC ARRAY OF RECORD
+                      value_start DATE,
+                      value_end DATE
+                  END RECORD
              END RECORD
 
 PRIVATE DEFINE initCount SMALLINT
 
 PRIVATE DEFINE calendars DYNAMIC ARRAY OF t_calendar
 
-PRIVATE CONSTANT CAL_GRID_DAYS  SMALLINT = 7, 
-                 CAL_GRID_WEEKS SMALLINT = 6
+PRIVATE CONSTANT CAL_GRID_DAYS  SMALLINT = 7
+PRIVATE CONSTANT CAL_GRID_WEEKS SMALLINT = 6
 
 #+ Library initialization function.
 #+
@@ -290,6 +293,65 @@ PUBLIC FUNCTION clearSelectedDates(id)
     CALL calendars[id].selected_dates.clear()
 END FUNCTION
 
+PRIVATE FUNCTION _findSelectedDateRange(id, value_start, value_end)
+    DEFINE id SMALLINT, value_start DATE, value_end DATE
+    DEFINE x, l INTEGER
+    LET l = calendars[id].selected_dates.getLength()
+    FOR x = 1 TO l
+       IF value_start == calendars[id].selected_dates[x].value_start
+       AND value_end == calendars[id].selected_dates[x].value_end
+       THEN
+          RETURN x
+       END IF
+    END FOR
+    RETURN 0
+END FUNCTION
+
+#+ Adds a date range to the selected dates of the given calendar
+#+
+#+ Several overlapping date ranges can co-exist.
+#+
+#+ @code
+#+    D1...D2
+#+      D3.....D4
+#+     D5..D6
+#+
+#+ @param id           The calendar id
+#+ @param value_start  The start DATE value
+#+ @param value_end    The end DATE value
+#+
+PUBLIC FUNCTION addSelectedDateRange(id, value_start, value_end)
+    DEFINE id SMALLINT, value_start DATE, value_end DATE
+    DEFINE x, l INTEGER
+    CALL _check_id(id)
+    IF value_end IS NULL THEN LET value_end = value_start END IF
+    IF value_end < value_start THEN RETURN END IF
+    LET x = _findSelectedDateRange(id, value_start, value_end)
+    IF x == 0 THEN
+       LET l = calendars[id].selected_dates.getLength()
+       LET calendars[id].selected_dates[l+1].value_start = value_start
+       LET calendars[id].selected_dates[l+1].value_end = value_end
+    END IF
+END FUNCTION
+
+#+ Remove a date range to the selected dates of the given calendar
+#+
+#+ @param id           The calendar id
+#+ @param value_start  The start DATE value
+#+ @param value_end    The end DATE value
+#+
+PUBLIC FUNCTION removeSelectedDateRange(id, value_start, value_end)
+    DEFINE id SMALLINT, value_start DATE, value_end DATE
+    DEFINE x INTEGER
+    CALL _check_id(id)
+    IF value_end IS NULL THEN LET value_end = value_start END IF
+    IF value_end < value_start THEN RETURN END IF
+    LET x = _findSelectedDateRange(id, value_start, value_end)
+    IF x > 0 THEN
+       CALL calendars[id].selected_dates.deleteElement(x)
+    END IF
+END FUNCTION
+
 #+ Adds a date to the selected dates of the given calendar
 #+
 #+ @param id     The calendar id
@@ -297,12 +359,8 @@ END FUNCTION
 #+
 PUBLIC FUNCTION addSelectedDate(id, value)
     DEFINE id SMALLINT, value DATE
-    DEFINE l SMALLINT
     CALL _check_id(id)
-    IF calendars[id].selected_dates.search(NULL,value) == 0 THEN
-       LET l = calendars[id].selected_dates.getLength()
-       LET calendars[id].selected_dates[l+1] = value
-    END IF
+    CALL addSelectedDateRange(id, value, value)
 END FUNCTION
 
 #+ Remove a date from the selected dates of the given calendar
@@ -312,12 +370,8 @@ END FUNCTION
 #+
 PUBLIC FUNCTION removeSelectedDate(id, value)
     DEFINE id SMALLINT, value DATE
-    DEFINE i SMALLINT
     CALL _check_id(id)
-    LET i = calendars[id].selected_dates.search(NULL,value)
-    IF i>0 THEN
-       CALL calendars[id].selected_dates.deleteElement(i)
-    END IF
+    CALL removeSelectedDateRange(id, value, value)
 END FUNCTION
 
 #+ Check if a date is selected for the given calendar
@@ -327,8 +381,16 @@ END FUNCTION
 #+
 PUBLIC FUNCTION isSelectedDate(id, value)
     DEFINE id SMALLINT, value DATE
+    DEFINE x, l INTEGER
     CALL _check_id(id)
-    RETURN ( calendars[id].selected_dates.search(NULL,value) > 0)
+    LET l = calendars[id].selected_dates.getLength()
+    FOR x = 1 TO l
+       IF value >= calendars[id].selected_dates[x].value_start
+       AND value <= calendars[id].selected_dates[x].value_end THEN
+          RETURN TRUE
+       END IF
+    END FOR
+    RETURN FALSE
 END FUNCTION
 
 
@@ -536,7 +598,7 @@ PRIVATE FUNCTION _create_styles(id, root_svg)
         CALL attr.addAttribute(SVGATT_STROKE,        "gray" )
         CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  "0.5" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_out",attr) )
- 
+
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].daysel_cell_color )
         CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.2" )
@@ -550,7 +612,7 @@ PRIVATE FUNCTION _create_styles(id, root_svg)
         CALL attr.addAttribute(SVGATT_STROKE,        "red" )
         CALL attr.addAttribute(SVGATT_STROKE_WIDTH,  "0.2" )
         CALL buf.append( fglsvgcanvas.styleDefinition(".grid_cell_today",attr) )
- 
+
         CALL attr.clear()
         CALL attr.addAttribute(SVGATT_FILL, calendars[id].dayoff_cell_color )
         CALL attr.addAttribute(SVGATT_FILL_OPACITY,  "0.3" )
@@ -881,7 +943,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
            day_num SMALLINT,
            day_date DATE,
            dayn_class, cell_class STRING,
-           sd BOOLEAN
+           is_selected BOOLEAN
 
     CALL _create_styles(id, root_svg)
 
@@ -970,7 +1032,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
             LET tx = (gcol-1) * sx
             LET ty = (glin-1) * sy
 
-            LET sd = isSelectedDate(id, day_date)
+            LET is_selected = isSelectedDate(id, day_date)
 
             LET day_num = DAY(day_date)
 
@@ -986,7 +1048,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                END IF
             END IF
 
-            IF sd AND calendars[id].cal_type!=FGLCALENDAR_TYPE_DOTS THEN
+            IF is_selected AND calendars[id].cal_type!=FGLCALENDAR_TYPE_DOTS THEN
                LET cell_class = "grid_cell_selected"
             END IF
 
@@ -1028,7 +1090,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                   CALL dnums.appendChild(t)
                END IF
 
-               IF sd AND calendars[id].cal_type==FGLCALENDAR_TYPE_DOTS THEN
+               IF is_selected AND calendars[id].cal_type==FGLCALENDAR_TYPE_DOTS THEN
                   LET n = fglsvgcanvas.circle( tx+(sx/2), ty+(sy*0.8), 2 )
                   CALL decos.appendChild(n)
                END IF
@@ -1037,7 +1099,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                CALL n.setAttribute( SVGATT_CLASS, cell_class )
                CALL n.setAttribute("id", SFMT("day_%1", (day_date USING "yyyy-mm-dd")) )
                CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
-               IF sd THEN
+               IF is_selected THEN
                   CALL selcl.appendChild(n)
                ELSE
                   CALL cells.appendChild(n)
@@ -1055,7 +1117,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                    CALL n.setAttribute("id", SFMT("day_%1", (day_date USING "yyyy-mm-dd")) )
                    CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
                    CALL n.setAttribute(SVGATT_CLASS,"grid_cell_today")
-                   IF sd THEN
+                   IF is_selected THEN
                       CALL selcl.appendChild(n)
                    ELSE
                       CALL cells.appendChild(n)

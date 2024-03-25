@@ -1,7 +1,8 @@
 ACTION DEFAULTS
   ACTION calendar_selection (DEFAULTVIEW=NO)
 END
-LAYOUT (TEXT="FGL Calendar demo")
+LAYOUT (TEXT="FGL Calendar demo", STYLE="main2")
+VBOX
 GRID
 {
 [cm            |cy      ]
@@ -13,17 +14,31 @@ GRID
 [                       ]
 [                       ]
 [                       ]
-<GROUP g1               >
+}
+END
+HBOX
+GRID
+{
  Type: [ct              ]
  Theme:[cc              ]
- -----------------------
+ Mode: [sm              ]
+}
+END
+GRID
+{
 [sdn                    ]
 [sdu                    ]
 [swn                    ]
- -----------------------
- Date:  [cd             ]
-<                       >
 }
+END
+GRID
+{
+ Date 1: [cd1           ]
+ Date 2: [cd2           ]
+         [b1            ]
+         [b2            ]
+}
+END
 END
 END
 
@@ -44,17 +59,23 @@ WEBCOMPONENT cal=FORMONLY.calendar, TABINDEX=0,
    SCROLLBARS=NONE
 ;
 
-GROUP g1: group1, TEXT="Parameters";
 COMBOBOX ct=FORMONLY.curr_type, NOT NULL,
    INITIALIZER=cmb_init_types;
 COMBOBOX cc=FORMONLY.curr_theme, NOT NULL,
    INITIALIZER=cmb_init_themes;
+COMBOBOX sm=FORMONLY.curr_mode, NOT NULL,
+   INITIALIZER=cmb_init_modes;
+
 CHECKBOX sdn=FORMONLY.show_daynames, NOT NULL,
    TEXT="Show day names";
 CHECKBOX sdu=FORMONLY.show_daynums, NOT NULL,
    TEXT="Show day numbers";
 CHECKBOX swn=FORMONLY.show_weeknums, NOT NULL,
    TEXT="Show week numbers";
-DATEEDIT cd=FORMONLY.selected_date;
+
+DATEEDIT cd1=FORMONLY.selected_date_1;
+DATEEDIT cd2=FORMONLY.selected_date_2;
+BUTTON b1: clear, TEXT="Clear";
+BUTTON b2: close, TEXT="Close";
 
 END

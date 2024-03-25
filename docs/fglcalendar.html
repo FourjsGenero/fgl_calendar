@@ -19,232 +19,272 @@
 <br><small>Summary: <a href="#constant_summary">CONSTANT</a> <a href="#function_summary">FUNCTION</a></small><hr>
 <b>fgl_calendar</b><h1>fglcalendar</h1>
 <p> Genero Calendar library</p>
-<p> This library implements a set of functions to create a calendar area in a WEBCOMPONENT field. </p>
+<p> This library implements a set of functions to create a calendar area in a WEBCOMPONENT field.</p>
 <a id="constant_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
-<tr><th class="summary" colspan="1">CONSTANT Summary</th></tr>
-<tr><td class="summary-text">
+<tr><th class="summary" colspan="2">CONSTANT Summary</th></tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_THEME_AMAZON">FGLCALENDAR_THEME_AMAZON</a></b> INTEGER<br>
-</td></tr>
-<tr><td class="summary-text">
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_THEME_CHILI">FGLCALENDAR_THEME_CHILI</a></b> INTEGER<br>
-</td></tr>
-<tr><td class="summary-text">
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_THEME_DEFAULT">FGLCALENDAR_THEME_DEFAULT</a></b> INTEGER<br>
-</td></tr>
-<tr><td class="summary-text">
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_THEME_PACIFIC">FGLCALENDAR_THEME_PACIFIC</a></b> INTEGER<br>
-</td></tr>
-<tr><td class="summary-text">
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_THEME_SAHARA">FGLCALENDAR_THEME_SAHARA</a></b> INTEGER<br>
-</td></tr>
-<tr><td class="summary-text">
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_THEME_VIOLA">FGLCALENDAR_THEME_VIOLA</a></b> INTEGER<br>
-</td></tr>
-<tr><td class="summary-text">
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_TYPE_DEFAULT">FGLCALENDAR_TYPE_DEFAULT</a></b> INTEGER<br>
-</td></tr>
-<tr><td class="summary-text">
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_TYPE_DOTS">FGLCALENDAR_TYPE_DOTS</a></b> INTEGER<br>
-</td></tr>
-<tr><td class="summary-text">
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_TYPE_ICON">FGLCALENDAR_TYPE_ICON</a></b> INTEGER<br>
-</td></tr>
-<tr><td class="summary-text">
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_TYPE_TEXT">FGLCALENDAR_TYPE_TEXT</a></b> INTEGER<br>
-</td></tr>
+</td>
+</tr>
 </table>
 <br><a id="function_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
 <tr><th class="summary" colspan="2">FUNCTION Summary</th></tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#addSelectedDate">addSelectedDate</a></b>(id SMALLINT, value DATE)<br> Adds a date to the selected dates of the given calendar</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#addSelectedDateRange">addSelectedDateRange</a></b>(id SMALLINT, value_start DATE, value_end DATE)<br> Adds a date range to the selected dates of the given calendar</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#clearSelectedDates">clearSelectedDates</a></b>(id SMALLINT)<br> Clears the list of selected dates for the given calendar</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#create">create</a></b>(name STRING) RETURNS INTEGER<br> Create a new calendar web component and return its ID</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#destroy">destroy</a></b>(id INTEGER)<br> Destroy a calendar object</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#display">display</a></b>(id SMALLINT, cy SMALLINT, cm SMALLINT)<br> Displays the calendar in the web component field</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#finalize">finalize</a></b>()<br> Library finalization function.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#getSelectedDateFromValue">getSelectedDateFromValue</a></b>(id SMALLINT, value STRING)<br> Extracts selected date info from the web component field value.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#getViewMonth">getViewMonth</a></b>(id SMALLINT)<br> Returns the current month set for the last calendar display.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#getViewYear">getViewYear</a></b>(id SMALLINT)<br> Returns the current year set for the last calendar display.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#initialize">initialize</a></b>()<br> Library initialization function.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#isSelectedDate">isSelectedDate</a></b>(id SMALLINT, value DATE)<br> Check if a date is selected for the given calendar</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#removeSelectedDate">removeSelectedDate</a></b>(id SMALLINT, value DATE)<br> Remove a date from the selected dates of the given calendar</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#removeSelectedDateRange">removeSelectedDateRange</a></b>(id SMALLINT, value_start DATE, value_end DATE)<br> Remove a date range to the selected dates of the given calendar</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#setColorTheme">setColorTheme</a></b>(id SMALLINT, theme SMALLINT)<br> Defines the view type of the calendar.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#setDayCellColor">setDayCellColor</a></b>(id SMALLINT, color STRING)<br> Defines the color for the day cells in the current month.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#setDayCellSize">setDayCellSize</a></b>(id SMALLINT, rw SMALLINT, rh SMALLINT)<br> Defines the relative size of calendar cells.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#setDayNames">setDayNames</a></b>(id SMALLINT, names STRING)<br> Defines the names for the days (for localization).</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#setDayOffCellColor">setDayOffCellColor</a></b>(id SMALLINT, color STRING)<br> Defines the color for the days off (Sat / Sun)</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#setDayOutCellColor">setDayOutCellColor</a></b>(id SMALLINT, color STRING)<br> Defines the color for the days out of current month</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#setDaySelectedCellColor">setDaySelectedCellColor</a></b>(id SMALLINT, color STRING)<br> Defines the color for the selected days</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#setDayTodayCellColor">setDayTodayCellColor</a></b>(id SMALLINT, color STRING)<br> Defines the color for the current day cell (today).</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#setViewType">setViewType</a></b>(id SMALLINT, type SMALLINT)<br> Defines the view type of the calendar.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#showDayNames">showDayNames</a></b>(id SMALLINT, show BOOLEAN)<br> Defines if day names must be displayed in the calendar.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#showDayNumbers">showDayNumbers</a></b>(id SMALLINT, show BOOLEAN)<br> Defines if day numbers must be displayed in the calendar.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#showToday">showToday</a></b>(id SMALLINT, show BOOLEAN)<br> Defines if today must be rendered in the calendar.</td>
 </tr>
 <tr>
-<td class="summary-text"></td>
+<td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#showWeekNumbers">showWeekNumbers</a></b>(id SMALLINT, show BOOLEAN)<br> Defines if the calendar must show week numbers on the left.</td>
 </tr>
 </table>
 <br><h2>Constants</h2>
 <a id="FGLCALENDAR_THEME_AMAZON"> </a><h3>FGLCALENDAR_THEME_AMAZON</h3>
-<tt>CONSTANT <b>FGLCALENDAR_THEME_AMAZON</b> INTEGER = 4</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_THEME_AMAZON</b> INTEGER = 4</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="FGLCALENDAR_THEME_CHILI"> </a><h3>FGLCALENDAR_THEME_CHILI</h3>
-<tt>CONSTANT <b>FGLCALENDAR_THEME_CHILI</b> INTEGER = 6</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_THEME_CHILI</b> INTEGER = 6</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="FGLCALENDAR_THEME_DEFAULT"> </a><h3>FGLCALENDAR_THEME_DEFAULT</h3>
-<tt>CONSTANT <b>FGLCALENDAR_THEME_DEFAULT</b> INTEGER = 1</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_THEME_DEFAULT</b> INTEGER = 1</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="FGLCALENDAR_THEME_PACIFIC"> </a><h3>FGLCALENDAR_THEME_PACIFIC</h3>
-<tt>CONSTANT <b>FGLCALENDAR_THEME_PACIFIC</b> INTEGER = 3</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_THEME_PACIFIC</b> INTEGER = 3</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="FGLCALENDAR_THEME_SAHARA"> </a><h3>FGLCALENDAR_THEME_SAHARA</h3>
-<tt>CONSTANT <b>FGLCALENDAR_THEME_SAHARA</b> INTEGER = 2</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_THEME_SAHARA</b> INTEGER = 2</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="FGLCALENDAR_THEME_VIOLA"> </a><h3>FGLCALENDAR_THEME_VIOLA</h3>
-<tt>CONSTANT <b>FGLCALENDAR_THEME_VIOLA</b> INTEGER = 5</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_THEME_VIOLA</b> INTEGER = 5</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="FGLCALENDAR_TYPE_DEFAULT"> </a><h3>FGLCALENDAR_TYPE_DEFAULT</h3>
-<tt>CONSTANT <b>FGLCALENDAR_TYPE_DEFAULT</b> INTEGER = 1</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_TYPE_DEFAULT</b> INTEGER = 1</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="FGLCALENDAR_TYPE_DOTS"> </a><h3>FGLCALENDAR_TYPE_DOTS</h3>
-<tt>CONSTANT <b>FGLCALENDAR_TYPE_DOTS</b> INTEGER = 4</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_TYPE_DOTS</b> INTEGER = 4</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="FGLCALENDAR_TYPE_ICON"> </a><h3>FGLCALENDAR_TYPE_ICON</h3>
-<tt>CONSTANT <b>FGLCALENDAR_TYPE_ICON</b> INTEGER = 2</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_TYPE_ICON</b> INTEGER = 2</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="FGLCALENDAR_TYPE_TEXT"> </a><h3>FGLCALENDAR_TYPE_TEXT</h3>
-<tt>CONSTANT <b>FGLCALENDAR_TYPE_TEXT</b> INTEGER = 3</tt><dl>
+<tt>public CONSTANT <b>FGLCALENDAR_TYPE_TEXT</b> INTEGER = 3</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <h2>Functions</h2>
-<a id="addSelectedDate"> </a><h3>addSelectedDate</h3>
-<tt>FUNCTION <b>addSelectedDate</b>(id SMALLINT, value DATE)</tt><dl>
+<h3><a id="addSelectedDate">addSelectedDate</a></h3>
+<tt>public FUNCTION <b>addSelectedDate</b>(id SMALLINT, value DATE)</tt><dl>
 <dd><p> Adds a date to the selected dates of the given calendar</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -254,8 +294,27 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="clearSelectedDates"> </a><h3>clearSelectedDates</h3>
-<tt>FUNCTION <b>clearSelectedDates</b>(id SMALLINT)</tt><dl>
+<h3><a id="addSelectedDateRange">addSelectedDateRange</a></h3>
+<tt>public FUNCTION <b>addSelectedDateRange</b>(id SMALLINT, value_start DATE, value_end DATE)</tt><dl>
+<dd>
+<p> Adds a date range to the selected dates of the given calendar</p>
+<p> Several overlapping date ranges can co-exist.</p>
+<p>
+      <span><pre>    D1...D2
+      D3.....D4
+     D5..D6</pre></span>
+    </p>
+</dd>
+<dd><dl>
+<dt><b>Parameters:</b></dt>
+<dd>
+<code>id</code> - The calendar id<br><code>value_start</code> - The start DATE value<br><code>value_end</code> - The end DATE value<br>
+</dd>
+</dl></dd>
+</dl>
+<hr>
+<h3><a id="clearSelectedDates">clearSelectedDates</a></h3>
+<tt>public FUNCTION <b>clearSelectedDates</b>(id SMALLINT)</tt><dl>
 <dd><p> Clears the list of selected dates for the given calendar</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -265,8 +324,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="create"> </a><h3>create</h3>
-<tt>FUNCTION <b>create</b>(name STRING) RETURNS INTEGER</tt><dl>
+<h3><a id="create">create</a></h3>
+<tt>public FUNCTION <b>create</b>(name STRING) RETURNS INTEGER</tt><dl>
 <dd>
 <p> Create a new calendar web component and return its ID</p>
 <p> This function create a new calendar object and returns its ID.
@@ -290,8 +349,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="destroy"> </a><h3>destroy</h3>
-<tt>FUNCTION <b>destroy</b>(id INTEGER)</tt><dl>
+<h3><a id="destroy">destroy</a></h3>
+<tt>public FUNCTION <b>destroy</b>(id INTEGER)</tt><dl>
 <dd>
 <p> Destroy a calendar object</p>
 <p> This function releases all resources allocated for the calendar.</p>
@@ -304,8 +363,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="display"> </a><h3>display</h3>
-<tt>FUNCTION <b>display</b>(id SMALLINT, cy SMALLINT, cm SMALLINT)</tt><dl>
+<h3><a id="display">display</a></h3>
+<tt>public FUNCTION <b>display</b>(id SMALLINT, cy SMALLINT, cm SMALLINT)</tt><dl>
 <dd><p> Displays the calendar in the web component field</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -315,8 +374,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="finalize"> </a><h3>finalize</h3>
-<tt>FUNCTION <b>finalize</b>()</tt><dl>
+<h3><a id="finalize">finalize</a></h3>
+<tt>public FUNCTION <b>finalize</b>()</tt><dl>
 <dd>
 <p> Library finalization function.</p>
 <p> This function has to be called when the library is not longer used.</p>
@@ -324,8 +383,8 @@
 <dd><dl></dl></dd>
 </dl>
 <hr>
-<a id="getSelectedDateFromValue"> </a><h3>getSelectedDateFromValue</h3>
-<tt>FUNCTION <b>getSelectedDateFromValue</b>(id SMALLINT, value STRING)</tt><dl>
+<h3><a id="getSelectedDateFromValue">getSelectedDateFromValue</a></h3>
+<tt>public FUNCTION <b>getSelectedDateFromValue</b>(id SMALLINT, value STRING)</tt><dl>
 <dd>
 <p> Extracts selected date info from the web component field value.</p>
 <p> This function can be called with the value of the web component field
@@ -343,8 +402,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="getViewMonth"> </a><h3>getViewMonth</h3>
-<tt>FUNCTION <b>getViewMonth</b>(id SMALLINT)</tt><dl>
+<h3><a id="getViewMonth">getViewMonth</a></h3>
+<tt>public FUNCTION <b>getViewMonth</b>(id SMALLINT)</tt><dl>
 <dd><p> Returns the current month set for the last calendar display.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -354,8 +413,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="getViewYear"> </a><h3>getViewYear</h3>
-<tt>FUNCTION <b>getViewYear</b>(id SMALLINT)</tt><dl>
+<h3><a id="getViewYear">getViewYear</a></h3>
+<tt>public FUNCTION <b>getViewYear</b>(id SMALLINT)</tt><dl>
 <dd><p> Returns the current year set for the last calendar display.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -365,8 +424,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="initialize"> </a><h3>initialize</h3>
-<tt>FUNCTION <b>initialize</b>()</tt><dl>
+<h3><a id="initialize">initialize</a></h3>
+<tt>public FUNCTION <b>initialize</b>()</tt><dl>
 <dd>
 <p> Library initialization function.</p>
 <p> This function has to be called before using other functions of this module.</p>
@@ -374,8 +433,8 @@
 <dd><dl></dl></dd>
 </dl>
 <hr>
-<a id="isSelectedDate"> </a><h3>isSelectedDate</h3>
-<tt>FUNCTION <b>isSelectedDate</b>(id SMALLINT, value DATE)</tt><dl>
+<h3><a id="isSelectedDate">isSelectedDate</a></h3>
+<tt>public FUNCTION <b>isSelectedDate</b>(id SMALLINT, value DATE)</tt><dl>
 <dd><p> Check if a date is selected for the given calendar</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -385,8 +444,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="removeSelectedDate"> </a><h3>removeSelectedDate</h3>
-<tt>FUNCTION <b>removeSelectedDate</b>(id SMALLINT, value DATE)</tt><dl>
+<h3><a id="removeSelectedDate">removeSelectedDate</a></h3>
+<tt>public FUNCTION <b>removeSelectedDate</b>(id SMALLINT, value DATE)</tt><dl>
 <dd><p> Remove a date from the selected dates of the given calendar</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -396,8 +455,19 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="setColorTheme"> </a><h3>setColorTheme</h3>
-<tt>FUNCTION <b>setColorTheme</b>(id SMALLINT, theme SMALLINT)</tt><dl>
+<h3><a id="removeSelectedDateRange">removeSelectedDateRange</a></h3>
+<tt>public FUNCTION <b>removeSelectedDateRange</b>(id SMALLINT, value_start DATE, value_end DATE)</tt><dl>
+<dd><p> Remove a date range to the selected dates of the given calendar</p></dd>
+<dd><dl>
+<dt><b>Parameters:</b></dt>
+<dd>
+<code>id</code> - The calendar id<br><code>value_start</code> - The start DATE value<br><code>value_end</code> - The end DATE value<br>
+</dd>
+</dl></dd>
+</dl>
+<hr>
+<h3><a id="setColorTheme">setColorTheme</a></h3>
+<tt>public FUNCTION <b>setColorTheme</b>(id SMALLINT, theme SMALLINT)</tt><dl>
 <dd><p> Defines the view type of the calendar.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -407,8 +477,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="setDayCellColor"> </a><h3>setDayCellColor</h3>
-<tt>FUNCTION <b>setDayCellColor</b>(id SMALLINT, color STRING)</tt><dl>
+<h3><a id="setDayCellColor">setDayCellColor</a></h3>
+<tt>public FUNCTION <b>setDayCellColor</b>(id SMALLINT, color STRING)</tt><dl>
 <dd><p> Defines the color for the day cells in the current month.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -418,8 +488,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="setDayCellSize"> </a><h3>setDayCellSize</h3>
-<tt>FUNCTION <b>setDayCellSize</b>(id SMALLINT, rw SMALLINT, rh SMALLINT)</tt><dl>
+<h3><a id="setDayCellSize">setDayCellSize</a></h3>
+<tt>public FUNCTION <b>setDayCellSize</b>(id SMALLINT, rw SMALLINT, rh SMALLINT)</tt><dl>
 <dd><p> Defines the relative size of calendar cells.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -429,8 +499,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="setDayNames"> </a><h3>setDayNames</h3>
-<tt>FUNCTION <b>setDayNames</b>(id SMALLINT, names STRING)</tt><dl>
+<h3><a id="setDayNames">setDayNames</a></h3>
+<tt>public FUNCTION <b>setDayNames</b>(id SMALLINT, names STRING)</tt><dl>
 <dd>
 <p> Defines the names for the days (for localization).</p>
 <p> By default, texts are in English, using this function to define
@@ -449,8 +519,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="setDayOffCellColor"> </a><h3>setDayOffCellColor</h3>
-<tt>FUNCTION <b>setDayOffCellColor</b>(id SMALLINT, color STRING)</tt><dl>
+<h3><a id="setDayOffCellColor">setDayOffCellColor</a></h3>
+<tt>public FUNCTION <b>setDayOffCellColor</b>(id SMALLINT, color STRING)</tt><dl>
 <dd><p> Defines the color for the days off (Sat / Sun)</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -460,8 +530,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="setDayOutCellColor"> </a><h3>setDayOutCellColor</h3>
-<tt>FUNCTION <b>setDayOutCellColor</b>(id SMALLINT, color STRING)</tt><dl>
+<h3><a id="setDayOutCellColor">setDayOutCellColor</a></h3>
+<tt>public FUNCTION <b>setDayOutCellColor</b>(id SMALLINT, color STRING)</tt><dl>
 <dd><p> Defines the color for the days out of current month</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -471,8 +541,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="setDaySelectedCellColor"> </a><h3>setDaySelectedCellColor</h3>
-<tt>FUNCTION <b>setDaySelectedCellColor</b>(id SMALLINT, color STRING)</tt><dl>
+<h3><a id="setDaySelectedCellColor">setDaySelectedCellColor</a></h3>
+<tt>public FUNCTION <b>setDaySelectedCellColor</b>(id SMALLINT, color STRING)</tt><dl>
 <dd><p> Defines the color for the selected days</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -482,8 +552,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="setDayTodayCellColor"> </a><h3>setDayTodayCellColor</h3>
-<tt>FUNCTION <b>setDayTodayCellColor</b>(id SMALLINT, color STRING)</tt><dl>
+<h3><a id="setDayTodayCellColor">setDayTodayCellColor</a></h3>
+<tt>public FUNCTION <b>setDayTodayCellColor</b>(id SMALLINT, color STRING)</tt><dl>
 <dd><p> Defines the color for the current day cell (today).</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -493,8 +563,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="setViewType"> </a><h3>setViewType</h3>
-<tt>FUNCTION <b>setViewType</b>(id SMALLINT, type SMALLINT)</tt><dl>
+<h3><a id="setViewType">setViewType</a></h3>
+<tt>public FUNCTION <b>setViewType</b>(id SMALLINT, type SMALLINT)</tt><dl>
 <dd><p> Defines the view type of the calendar.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -504,8 +574,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="showDayNames"> </a><h3>showDayNames</h3>
-<tt>FUNCTION <b>showDayNames</b>(id SMALLINT, show BOOLEAN)</tt><dl>
+<h3><a id="showDayNames">showDayNames</a></h3>
+<tt>public FUNCTION <b>showDayNames</b>(id SMALLINT, show BOOLEAN)</tt><dl>
 <dd>
 <p> Defines if day names must be displayed in the calendar.</p>
 <p> Default is TRUE.</p>
@@ -518,8 +588,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="showDayNumbers"> </a><h3>showDayNumbers</h3>
-<tt>FUNCTION <b>showDayNumbers</b>(id SMALLINT, show BOOLEAN)</tt><dl>
+<h3><a id="showDayNumbers">showDayNumbers</a></h3>
+<tt>public FUNCTION <b>showDayNumbers</b>(id SMALLINT, show BOOLEAN)</tt><dl>
 <dd>
 <p> Defines if day numbers must be displayed in the calendar.</p>
 <p> Default is TRUE.</p>
@@ -532,8 +602,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="showToday"> </a><h3>showToday</h3>
-<tt>FUNCTION <b>showToday</b>(id SMALLINT, show BOOLEAN)</tt><dl>
+<h3><a id="showToday">showToday</a></h3>
+<tt>public FUNCTION <b>showToday</b>(id SMALLINT, show BOOLEAN)</tt><dl>
 <dd>
 <p> Defines if today must be rendered in the calendar.</p>
 <p> Default is TRUE.</p>
@@ -546,8 +616,8 @@
 </dl></dd>
 </dl>
 <hr>
-<a id="showWeekNumbers"> </a><h3>showWeekNumbers</h3>
-<tt>FUNCTION <b>showWeekNumbers</b>(id SMALLINT, show BOOLEAN)</tt><dl>
+<h3><a id="showWeekNumbers">showWeekNumbers</a></h3>
+<tt>public FUNCTION <b>showWeekNumbers</b>(id SMALLINT, show BOOLEAN)</tt><dl>
 <dd>
 <p> Defines if the calendar must show week numbers on the left.</p>
 <p> Default is FALSE.</p>
@@ -559,7 +629,6 @@
 </dd>
 </dl></dd>
 </dl>
-<hr>
 <table BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY=""><tr>
 <td><a href="../overview-summary.html">Overview</a></td>
 <td><a href="package-summary.html">Package</a></td>
