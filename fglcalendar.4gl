@@ -19,9 +19,18 @@ PUBLIC CONSTANT FGLCALENDAR_THEME_AMAZON  = 4
 PUBLIC CONSTANT FGLCALENDAR_THEME_VIOLA   = 5
 PUBLIC CONSTANT FGLCALENDAR_THEME_CHILI   = 6
 
+PUBLIC CONSTANT FGLCALENDAR_DAY_MONDAY    = 1
+PUBLIC CONSTANT FGLCALENDAR_DAY_TUESDAY   = 2
+PUBLIC CONSTANT FGLCALENDAR_DAY_WEDNESDAY = 3
+PUBLIC CONSTANT FGLCALENDAR_DAY_THURSDAY  = 4
+PUBLIC CONSTANT FGLCALENDAR_DAY_FRIDAY    = 5
+PUBLIC CONSTANT FGLCALENDAR_DAY_SATURDAY  = 6
+PUBLIC CONSTANT FGLCALENDAR_DAY_SUNDAY    = 7
+
 PRIVATE TYPE t_calendar RECORD
                fglsvgcanvas SMALLINT,
                field STRING,
+               first_week_day SMALLINT,
                cal_type SMALLINT,
                color_theme SMALLINT,
                draw_attr DYNAMIC ARRAY OF SMALLINT,
@@ -54,12 +63,21 @@ PRIVATE DEFINE calendars DYNAMIC ARRAY OF t_calendar
 PRIVATE CONSTANT CAL_GRID_DAYS  SMALLINT = 7
 PRIVATE CONSTANT CAL_GRID_WEEKS SMALLINT = 6
 
+PRIVATE FUNCTION _fatal_error(msg)
+   DEFINE msg STRING
+   DEFINE ch base.Channel
+   LET ch = base.Channel.create()
+   CALL ch.openFile("<stderr>","w")
+   CALL ch.writeLine(SFMT("FGLCALENDAR ERROR: %1",msg))
+   CALL ch.close()
+   EXIT PROGRAM 1
+END FUNCTION
+
 #+ Library initialization function.
 #+
 #+ This function has to be called before using other functions of this module.
 #+
 PUBLIC FUNCTION initialize()
-    --WHENEVER ERROR RAISE
     IF initCount == 0 THEN
        -- prepare resources
        CALL fglsvgcanvas.initialize()
@@ -110,6 +128,7 @@ PUBLIC FUNCTION create(name)
     END IF
     LET calendars[id].fglsvgcanvas = fglsvgcanvas.create(name)
     LET calendars[id].field = name
+    LET calendars[id].first_week_day = 7 -- Sunday
     LET calendars[id].cal_type = FGLCALENDAR_TYPE_DEFAULT
     LET calendars[id].show_daynames = TRUE
     LET calendars[id].show_daynums = TRUE
@@ -119,6 +138,19 @@ PUBLIC FUNCTION create(name)
     LET calendars[id].cell_height = 20
     CALL setColorTheme(id, FGLCALENDAR_THEME_DEFAULT)
     RETURN id
+END FUNCTION
+
+PRIVATE FUNCTION _first_week_day_offset(fdw SMALLINT)
+    CASE fdw
+    WHEN FGLCALENDAR_DAY_MONDAY    RETURN 0
+    WHEN FGLCALENDAR_DAY_TUESDAY   RETURN 1
+    WHEN FGLCALENDAR_DAY_WEDNESDAY RETURN 2
+    WHEN FGLCALENDAR_DAY_THURSDAY  RETURN 3
+    WHEN FGLCALENDAR_DAY_FRIDAY    RETURN -3
+    WHEN FGLCALENDAR_DAY_SATURDAY  RETURN -2
+    WHEN FGLCALENDAR_DAY_SUNDAY    RETURN -1
+    OTHERWISE RETURN 0
+    END CASE
 END FUNCTION
 
 #+ Destroy a calendar object
@@ -204,7 +236,7 @@ PUBLIC FUNCTION setDayCellSize(id, rw, rh)
     DEFINE id SMALLINT, rw, rh SMALLINT
     CALL _check_id(id)
     IF rw<1 OR rw>15 OR rh<1 OR rh>15 THEN
-       OPEN FORM _dummy_2_ FROM NULL
+       CALL _fatal_error("Cell size range is 1 to 15")
     END IF
     LET calendars[id].cell_width  = rw * 10
     LET calendars[id].cell_height = rh * 10
@@ -427,7 +459,7 @@ PRIVATE FUNCTION _check_id(id)
           RETURN
        END IF
     END IF
-    OPEN FORM _dummy_ FROM NULL
+    CALL _fatal_error(SFMT("Invalid calendar id : %1", id))
 END FUNCTION
 
 PRIVATE FUNCTION _week_one(y)
@@ -486,6 +518,23 @@ PUBLIC FUNCTION setDayNames(id, names)
     WHILE tok.hasMoreTokens()
         LET calendars[id].day_names[x:=x+1] = tok.nextToken()
     END WHILE
+END FUNCTION
+
+#+ Defines the first day of the week.
+#+
+#+ The first day of the week will appear in the first column of the calendar grid.
+#+ Monday=1 ... Sunday=7.
+#+
+#+ @param id        The calendar id
+#+ @param day_num   The day number
+#+
+PUBLIC FUNCTION setFirstDayOfWeek(id, day_num)
+    DEFINE id SMALLINT, day_num SMALLINT
+    CALL _check_id(id)
+    IF day_num < 1 OR day_num > 7 THEN
+       CALL _fatal_error("Week day number must be in range 1 (Monday) to 7 (Sunday)")
+    END IF
+    LET calendars[id].first_week_day = day_num
 END FUNCTION
 
 #+ Defines the color for the day cells in the current month.
@@ -556,18 +605,21 @@ END FUNCTION
 
 PRIVATE FUNCTION _week_day_name(id, n)
     DEFINE id SMALLINT, n SMALLINT
-    CALL _check_id(id)
+    DEFINE x SMALLINT
+    LET x = n + _first_week_day_offset(calendars[id].first_week_day)
+    IF x > 7 THEN LET x = x - 7 END IF
+    IF x < 1 THEN LET x = x + 7 END IF
     IF calendars[id].day_names.getLength() == 7 THEN
-       RETURN calendars[id].day_names[n]
+       RETURN calendars[id].day_names[x]
     END IF
-    CASE n
-        WHEN 1 RETURN "Mon"
-        WHEN 2 RETURN "Tue"
-        WHEN 3 RETURN "Wed"
-        WHEN 4 RETURN "Thu"
-        WHEN 5 RETURN "Fri"
-        WHEN 6 RETURN "Sat"
-        WHEN 7 RETURN "Sun"
+    CASE x
+        WHEN FGLCALENDAR_DAY_MONDAY    RETURN "Mo"
+        WHEN FGLCALENDAR_DAY_TUESDAY   RETURN "Tu"
+        WHEN FGLCALENDAR_DAY_WEDNESDAY RETURN "We"
+        WHEN FGLCALENDAR_DAY_THURSDAY  RETURN "Th"
+        WHEN FGLCALENDAR_DAY_FRIDAY    RETURN "Fr"
+        WHEN FGLCALENDAR_DAY_SATURDAY  RETURN "Sa"
+        WHEN FGLCALENDAR_DAY_SUNDAY    RETURN "Su"
     END CASE
     RETURN "???"
 END FUNCTION
@@ -1087,6 +1139,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
     ELSE
        LET day_date = MDY(view_month, 1, view_year) -(f-1)
     END IF
+    LET day_date = day_date + _first_week_day_offset(calendars[id].first_week_day)
 
     IF calendars[id].show_daynames THEN
        FOR gcol = 1 TO CAL_GRID_DAYS
@@ -1230,7 +1283,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                   CALL n.setAttribute(SVGATT_CLASS,"grid_cell_edge")
                   CALL n.setAttribute("id", day_id)
                   CALL n.setAttribute(SVGATT_ONCLICK,SVGVAL_ELEM_CLICKED)
-                  CALL cells.appendChild(n)
+                  CALL selcl.appendChild(n)
 
                ELSE
 
