@@ -1150,7 +1150,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                                       "grid_day_name"
                                     )
            CALL t.setAttribute("text-anchor","middle")
-           CALL t.setAttribute("alignment-baseline","central")
+           CALL t.setAttribute("dominant-baseline","central")
            CALL grid.appendChild(t)
        END FOR
     END IF
@@ -1177,7 +1177,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                                       _week_number(day_date),
                                       "grid_week_num"
                                     )
-           CALL t.setAttribute("alignment-baseline","central")
+           CALL t.setAttribute("dominant-baseline","central")
            CALL grid.appendChild(t)
         END IF
 
@@ -1247,7 +1247,7 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                      CALL t.setAttribute("text-anchor","middle")
                   END IF
                   IF text_y_align THEN
-                     CALL t.setAttribute("alignment-baseline","central")
+                     CALL t.setAttribute("dominant-baseline","central")
                   END IF
                   CALL dnums.appendChild(t)
                END IF
