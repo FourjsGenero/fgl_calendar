@@ -31,6 +31,7 @@ PRIVATE TYPE t_calendar RECORD
                fglsvgcanvas SMALLINT,
                field STRING,
                first_week_day SMALLINT,
+               week_days_off DYNAMIC ARRAY OF SMALLINT,
                cal_type SMALLINT,
                color_theme SMALLINT,
                draw_attr DYNAMIC ARRAY OF SMALLINT,
@@ -128,7 +129,9 @@ PUBLIC FUNCTION create(name)
     END IF
     LET calendars[id].fglsvgcanvas = fglsvgcanvas.create(name)
     LET calendars[id].field = name
-    LET calendars[id].first_week_day = 7 -- Sunday
+    LET calendars[id].first_week_day = FGLCALENDAR_DAY_SUNDAY
+    LET calendars[id].week_days_off[1] = FGLCALENDAR_DAY_SATURDAY
+    LET calendars[id].week_days_off[2] = FGLCALENDAR_DAY_SUNDAY
     LET calendars[id].cal_type = FGLCALENDAR_TYPE_DEFAULT
     LET calendars[id].show_daynames = TRUE
     LET calendars[id].show_daynums = TRUE
@@ -140,8 +143,8 @@ PUBLIC FUNCTION create(name)
     RETURN id
 END FUNCTION
 
-PRIVATE FUNCTION _first_week_day_offset(fdw SMALLINT)
-    CASE fdw
+PRIVATE FUNCTION _first_week_day_offset(dn SMALLINT)
+    CASE dn
     WHEN FGLCALENDAR_DAY_MONDAY    RETURN 0
     WHEN FGLCALENDAR_DAY_TUESDAY   RETURN 1
     WHEN FGLCALENDAR_DAY_WEDNESDAY RETURN 2
@@ -520,6 +523,14 @@ PUBLIC FUNCTION setDayNames(id, names)
     END WHILE
 END FUNCTION
 
+PRIVATE FUNCTION _check_day_num(day_num SMALLINT)
+    IF day_num < FGLCALENDAR_DAY_MONDAY
+    OR day_num > FGLCALENDAR_DAY_SUNDAY
+    THEN
+       CALL _fatal_error("Week day number must be in range 1 (Monday) to 7 (Sunday)")
+    END IF
+END FUNCTION
+
 #+ Defines the first day of the week.
 #+
 #+ The first day of the week will appear in the first column of the calendar grid.
@@ -531,10 +542,36 @@ END FUNCTION
 PUBLIC FUNCTION setFirstDayOfWeek(id, day_num)
     DEFINE id SMALLINT, day_num SMALLINT
     CALL _check_id(id)
-    IF day_num < 1 OR day_num > 7 THEN
-       CALL _fatal_error("Week day number must be in range 1 (Monday) to 7 (Sunday)")
-    END IF
+    CALL _check_day_num(day_num)
     LET calendars[id].first_week_day = day_num
+END FUNCTION
+
+#+ Appends a day considered as off in the week.
+#+
+#+ The off-days of the week will render differently in the calendar grid.
+#+ Monday=1 ... Sunday=7.
+#+
+#+ @param id        The calendar id
+#+ @param day_num   The day number
+#+
+PUBLIC FUNCTION addDayOff(id, day_num)
+    DEFINE id SMALLINT, day_num SMALLINT
+    DEFINE x SMALLINT
+    CALL _check_id(id)
+    CALL _check_day_num(day_num)
+    CALL calendars[id].week_days_off.appendElement()
+    LET x = calendars[id].week_days_off.getLength()
+    LET calendars[id].week_days_off[x] = day_num
+END FUNCTION
+
+#+ Clears the list of days considered as off in the week.
+#+
+#+ @param id        The calendar id
+#+
+PUBLIC FUNCTION clearDaysOff(id)
+    DEFINE id SMALLINT
+    CALL _check_id(id)
+    CALL calendars[id].week_days_off.clear()
 END FUNCTION
 
 #+ Defines the color for the day cells in the current month.
@@ -603,12 +640,19 @@ PUBLIC FUNCTION setRangeLimitCellColor(id, color)
     LET calendars[id].daylim_cell_color = color
 END FUNCTION
 
-PRIVATE FUNCTION _week_day_name(id, n)
-    DEFINE id SMALLINT, n SMALLINT
+PRIVATE FUNCTION _pos_to_week_day_num(id, pos)
+    DEFINE id SMALLINT, pos SMALLINT
     DEFINE x SMALLINT
-    LET x = n + _first_week_day_offset(calendars[id].first_week_day)
+    LET x = pos + _first_week_day_offset(calendars[id].first_week_day)
     IF x > 7 THEN LET x = x - 7 END IF
     IF x < 1 THEN LET x = x + 7 END IF
+    RETURN x
+END FUNCTION
+
+PRIVATE FUNCTION _week_day_name(id, pos)
+    DEFINE id SMALLINT, pos SMALLINT
+    DEFINE x SMALLINT
+    LET x = _pos_to_week_day_num(id, pos)
     IF calendars[id].day_names.getLength() == 7 THEN
        RETURN calendars[id].day_names[x]
     END IF
@@ -622,6 +666,13 @@ PRIVATE FUNCTION _week_day_name(id, n)
         WHEN FGLCALENDAR_DAY_SUNDAY    RETURN "Su"
     END CASE
     RETURN "???"
+END FUNCTION
+
+PRIVATE FUNCTION _week_day_off(id, pos)
+    DEFINE id SMALLINT, pos SMALLINT
+    DEFINE x SMALLINT
+    LET x = _pos_to_week_day_num(id, pos)
+    RETURN ( calendars[id].week_days_off.search(NULL,x) > 0 )
 END FUNCTION
 
 PRIVATE FUNCTION _set_text_size(id)
@@ -1196,10 +1247,10 @@ PRIVATE FUNCTION _draw_calendar_grid(id, root_svg, view_year, view_month)
                LET cell_class = "grid_cell_out"
             ELSE
                LET dayn_class = "grid_day_num"
-               IF gcol<=5 THEN
-                  LET cell_class = "grid_cell"
-               ELSE
+               IF _week_day_off(id, gcol) THEN
                   LET cell_class = "grid_cell_off"
+               ELSE
+                  LET cell_class = "grid_cell"
                END IF
             END IF
 
