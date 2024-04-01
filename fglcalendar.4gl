@@ -1019,7 +1019,7 @@ PRIVATE FUNCTION _draw_calendar(id, view_year, view_month)
     LET wb.x = 0
     LET wb.y = 0
     LET addon_x = 0
-    LET addon_y = (calendars[id].cell_height / 2)
+    LET addon_y = (calendars[id].cell_height / 6)
     IF calendars[id].show_weeknums THEN
        LET dx = (calendars[id].text_size * 1.5) + 2
        LET wb.x = wb.x - dx
@@ -1028,6 +1028,8 @@ PRIVATE FUNCTION _draw_calendar(id, view_year, view_month)
     IF calendars[id].show_daynames THEN
        LET wb.y = wb.y - (calendars[id].text_size)
        LET addon_y = addon_y + (calendars[id].text_size * 1.3)
+    ELSE
+       LET wb.y = wb.y - 2
     END IF
 
     LET wb.w = (calendars[id].cell_width  * CAL_GRID_DAYS)  + addon_x
