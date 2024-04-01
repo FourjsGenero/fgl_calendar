@@ -9,6 +9,8 @@ DEFINE rec RECORD
                show_daynames BOOLEAN,
                show_daynums  BOOLEAN,
                show_weeknums BOOLEAN,
+               day_cell_size_w INTEGER,
+               day_cell_size_h INTEGER,
                calendar STRING,
                selected_date_1 DATE,
                selected_date_2 DATE
@@ -60,6 +62,10 @@ MAIN
     LET rec.show_weeknums = FALSE
     CALL fglcalendar.showWeekNumbers(cid, rec.show_weeknums)
 
+    LET rec.day_cell_size_w = 2
+    LET rec.day_cell_size_h = 2
+    CALL fglcalendar.setDayCellSize(cid, rec.day_cell_size_w, rec.day_cell_size_h)
+
     CALL ui.Interface.refresh() -- force form/webcomponent display before sending SVG
     CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
 
@@ -104,6 +110,13 @@ MAIN
 
         ON CHANGE show_weeknums
            CALL fglcalendar.showWeekNumbers(cid, rec.show_weeknums)
+           CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
+
+        ON CHANGE day_cell_size_w
+           CALL fglcalendar.setDayCellSize(cid, rec.day_cell_size_w, rec.day_cell_size_h)
+           CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
+        ON CHANGE day_cell_size_h
+           CALL fglcalendar.setDayCellSize(cid, rec.day_cell_size_w, rec.day_cell_size_h)
            CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
 
         ON ACTION calendar_selection

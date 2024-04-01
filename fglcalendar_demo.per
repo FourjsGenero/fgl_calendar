@@ -29,6 +29,7 @@ GRID
 [sdn                    ]
 [sdu                    ]
 [swn                    ]
+ Cell size: [csw  |csh  ]
 }
 END
 GRID
@@ -74,6 +75,10 @@ CHECKBOX sdu=FORMONLY.show_daynums, NOT NULL,
    TEXT="Show day numbers";
 CHECKBOX swn=FORMONLY.show_weeknums, NOT NULL,
    TEXT="Show week numbers";
+SPINEDIT csw=FORMONLY.day_cell_size_w, NOT NULL,
+   VALUEMIN=1, VALUEMAX=15;
+SPINEDIT csh=FORMONLY.day_cell_size_h, NOT NULL,
+   VALUEMIN=1, VALUEMAX=15;
 
 DATEEDIT cd1=FORMONLY.selected_date_1;
 DATEEDIT cd2=FORMONLY.selected_date_2;
