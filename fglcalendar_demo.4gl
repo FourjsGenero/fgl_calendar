@@ -84,14 +84,14 @@ MAIN
         ON CHANGE curr_year
            CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
         ON CHANGE curr_month
-           IF rec.curr_month == 0 THEN
-              LET rec.curr_year = rec.curr_year-1
-              LET rec.curr_month = 12
-           END IF
-           IF rec.curr_month == 13 THEN
-              LET rec.curr_year = rec.curr_year+1
-              LET rec.curr_month = 1
-           END IF
+           CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
+        ON ACTION year_month_decr ATTRIBUTES(ACCELERATOR="CONTROL-P")
+           CALL year_month_change(rec.curr_year, rec.curr_month, -1)
+                RETURNING rec.curr_year, rec.curr_month
+           CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
+        ON ACTION year_month_incr ATTRIBUTES(ACCELERATOR="CONTROL-N")
+           CALL year_month_change(rec.curr_year, rec.curr_month, +1)
+                RETURNING rec.curr_year, rec.curr_month
            CALL fglcalendar.display(cid, rec.curr_year, rec.curr_month)
 
         ON CHANGE show_daynames
@@ -197,11 +197,9 @@ END FUNCTION
 FUNCTION cmb_init_month(cmb)
     DEFINE cmb ui.ComboBox
     DEFINE m SMALLINT
-    CALL cmb.addItem(0, "<<<")
     FOR m=1 TO 12
         CALL cmb.addItem(m, month_name(m))
     END FOR
-    CALL cmb.addItem(13, ">>>")
 END FUNCTION
 
 FUNCTION month_name(m)
@@ -275,4 +273,18 @@ PRIVATE FUNCTION add_presentation_styles()
     IF nn IS NOT NULL THEN
        CALL set_style_attribute(nn, "fontSize", "1.2em" )
     END IF
+END FUNCTION
+
+PRIVATE FUNCTION year_month_change(y, m, d)
+    DEFINE y SMALLINT, m SMALLINT, d SMALLINT
+    LET m = m + d
+    IF m == 0 THEN
+        LET y = y - 1
+        LET m = 12
+    END IF
+    IF m == 13 THEN
+        LET y = y + 1
+        LET m = 1
+    END IF
+    RETURN y, m
 END FUNCTION
