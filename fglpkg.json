@@ -1,0 +1,15 @@
+{
+  "name": "fgl_calendar_001",
+  "version": "1.0.0",
+  "description": "Genero BDL calendar widget",
+  "visibility": "public",
+  "keywords": [ "calendar", "webcomponent", "date" ],
+  "author": "Sebastien FLAESCH",
+  "repository": "https://github.com/FourjsGenero/fgl_calendar",
+  "license": "MIT",
+  "genero": ">=4.0.0",
+  "docs": [ "README.md", "docs/fglcalendar.html" ],
+  "dependencies": {},
+  "files": [ "*.42m", "*.4gl", "*.42f", "*.per", "*.html" ],
+  "programs": [ "fglcalendar_demo" ]
+}

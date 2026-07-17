@@ -25,6 +25,48 @@
 <tr>
 <td class="summary-text" width="25%">public</td>
 <td class="summary-text">
+<b><a href="#FGLCALENDAR_DAY_FRIDAY">FGLCALENDAR_DAY_FRIDAY</a></b> INTEGER<br>
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#FGLCALENDAR_DAY_MONDAY">FGLCALENDAR_DAY_MONDAY</a></b> INTEGER<br>
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#FGLCALENDAR_DAY_SATURDAY">FGLCALENDAR_DAY_SATURDAY</a></b> INTEGER<br>
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#FGLCALENDAR_DAY_SUNDAY">FGLCALENDAR_DAY_SUNDAY</a></b> INTEGER<br>
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#FGLCALENDAR_DAY_THURSDAY">FGLCALENDAR_DAY_THURSDAY</a></b> INTEGER<br>
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#FGLCALENDAR_DAY_TUESDAY">FGLCALENDAR_DAY_TUESDAY</a></b> INTEGER<br>
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#FGLCALENDAR_DAY_WEDNESDAY">FGLCALENDAR_DAY_WEDNESDAY</a></b> INTEGER<br>
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_THEME_AMAZON">FGLCALENDAR_THEME_AMAZON</a></b> INTEGER<br>
 </td>
 </tr>
@@ -79,6 +121,12 @@
 <tr>
 <td class="summary-text" width="25%">public</td>
 <td class="summary-text">
+<b><a href="#FGLCALENDAR_TYPE_SNAKE">FGLCALENDAR_TYPE_SNAKE</a></b> INTEGER<br>
+</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#FGLCALENDAR_TYPE_TEXT">FGLCALENDAR_TYPE_TEXT</a></b> INTEGER<br>
 </td>
 </tr>
@@ -88,12 +136,22 @@
 <tr>
 <td class="summary-text" width="25%">public</td>
 <td class="summary-text">
+<b><a href="#addDayOff">addDayOff</a></b>(id SMALLINT, day_num SMALLINT)<br> Appends a day considered as off in the week.</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#addSelectedDate">addSelectedDate</a></b>(id SMALLINT, value DATE)<br> Adds a date to the selected dates of the given calendar</td>
 </tr>
 <tr>
 <td class="summary-text" width="25%">public</td>
 <td class="summary-text">
 <b><a href="#addSelectedDateRange">addSelectedDateRange</a></b>(id SMALLINT, value_start DATE, value_end DATE)<br> Adds a date range to the selected dates of the given calendar</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#clearDaysOff">clearDaysOff</a></b>(id SMALLINT)<br> Clears the list of days considered as off in the week.</td>
 </tr>
 <tr>
 <td class="summary-text" width="25%">public</td>
@@ -198,6 +256,16 @@
 <tr>
 <td class="summary-text" width="25%">public</td>
 <td class="summary-text">
+<b><a href="#setFirstDayOfWeek">setFirstDayOfWeek</a></b>(id SMALLINT, day_num SMALLINT)<br> Defines the first day of the week.</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
+<b><a href="#setRangeLimitCellColor">setRangeLimitCellColor</a></b>(id SMALLINT, color STRING)<br> Defines the color for days on range limits</td>
+</tr>
+<tr>
+<td class="summary-text" width="25%">public</td>
+<td class="summary-text">
 <b><a href="#setViewType">setViewType</a></b>(id SMALLINT, type SMALLINT)<br> Defines the view type of the calendar.</td>
 </tr>
 <tr>
@@ -222,6 +290,48 @@
 </tr>
 </table>
 <br><h2>Constants</h2>
+<a id="FGLCALENDAR_DAY_FRIDAY"> </a><h3>FGLCALENDAR_DAY_FRIDAY</h3>
+<tt>public CONSTANT <b>FGLCALENDAR_DAY_FRIDAY</b> INTEGER = 5</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="FGLCALENDAR_DAY_MONDAY"> </a><h3>FGLCALENDAR_DAY_MONDAY</h3>
+<tt>public CONSTANT <b>FGLCALENDAR_DAY_MONDAY</b> INTEGER = 1</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="FGLCALENDAR_DAY_SATURDAY"> </a><h3>FGLCALENDAR_DAY_SATURDAY</h3>
+<tt>public CONSTANT <b>FGLCALENDAR_DAY_SATURDAY</b> INTEGER = 6</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="FGLCALENDAR_DAY_SUNDAY"> </a><h3>FGLCALENDAR_DAY_SUNDAY</h3>
+<tt>public CONSTANT <b>FGLCALENDAR_DAY_SUNDAY</b> INTEGER = 7</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="FGLCALENDAR_DAY_THURSDAY"> </a><h3>FGLCALENDAR_DAY_THURSDAY</h3>
+<tt>public CONSTANT <b>FGLCALENDAR_DAY_THURSDAY</b> INTEGER = 4</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="FGLCALENDAR_DAY_TUESDAY"> </a><h3>FGLCALENDAR_DAY_TUESDAY</h3>
+<tt>public CONSTANT <b>FGLCALENDAR_DAY_TUESDAY</b> INTEGER = 2</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="FGLCALENDAR_DAY_WEDNESDAY"> </a><h3>FGLCALENDAR_DAY_WEDNESDAY</h3>
+<tt>public CONSTANT <b>FGLCALENDAR_DAY_WEDNESDAY</b> INTEGER = 3</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
 <a id="FGLCALENDAR_THEME_AMAZON"> </a><h3>FGLCALENDAR_THEME_AMAZON</h3>
 <tt>public CONSTANT <b>FGLCALENDAR_THEME_AMAZON</b> INTEGER = 4</tt><dl>
 <dd></dd>
@@ -276,6 +386,12 @@
 <dd><dl></dl></dd>
 </dl>
 <hr>
+<a id="FGLCALENDAR_TYPE_SNAKE"> </a><h3>FGLCALENDAR_TYPE_SNAKE</h3>
+<tt>public CONSTANT <b>FGLCALENDAR_TYPE_SNAKE</b> INTEGER = 5</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
 <a id="FGLCALENDAR_TYPE_TEXT"> </a><h3>FGLCALENDAR_TYPE_TEXT</h3>
 <tt>public CONSTANT <b>FGLCALENDAR_TYPE_TEXT</b> INTEGER = 3</tt><dl>
 <dd></dd>
@@ -283,6 +399,21 @@
 </dl>
 <hr>
 <h2>Functions</h2>
+<h3><a id="addDayOff">addDayOff</a></h3>
+<tt>public FUNCTION <b>addDayOff</b>(id SMALLINT, day_num SMALLINT)</tt><dl>
+<dd>
+<p> Appends a day considered as off in the week.</p>
+<p> The off-days of the week will render differently in the calendar grid.
+ Monday=1 ... Sunday=7.</p>
+</dd>
+<dd><dl>
+<dt><b>Parameters:</b></dt>
+<dd>
+<code>id</code> - The calendar id<br><code>day_num</code> - The day number<br>
+</dd>
+</dl></dd>
+</dl>
+<hr>
 <h3><a id="addSelectedDate">addSelectedDate</a></h3>
 <tt>public FUNCTION <b>addSelectedDate</b>(id SMALLINT, value DATE)</tt><dl>
 <dd><p> Adds a date to the selected dates of the given calendar</p></dd>
@@ -309,6 +440,17 @@
 <dt><b>Parameters:</b></dt>
 <dd>
 <code>id</code> - The calendar id<br><code>value_start</code> - The start DATE value<br><code>value_end</code> - The end DATE value<br>
+</dd>
+</dl></dd>
+</dl>
+<hr>
+<h3><a id="clearDaysOff">clearDaysOff</a></h3>
+<tt>public FUNCTION <b>clearDaysOff</b>(id SMALLINT)</tt><dl>
+<dd><p> Clears the list of days considered as off in the week.</p></dd>
+<dd><dl>
+<dt><b>Parameters:</b></dt>
+<dd>
+<code>id</code> - The calendar id<br>
 </dd>
 </dl></dd>
 </dl>
@@ -563,13 +705,39 @@
 </dl></dd>
 </dl>
 <hr>
+<h3><a id="setFirstDayOfWeek">setFirstDayOfWeek</a></h3>
+<tt>public FUNCTION <b>setFirstDayOfWeek</b>(id SMALLINT, day_num SMALLINT)</tt><dl>
+<dd>
+<p> Defines the first day of the week.</p>
+<p> The first day of the week will appear in the first column of the calendar grid.
+ Monday=1 ... Sunday=7.</p>
+</dd>
+<dd><dl>
+<dt><b>Parameters:</b></dt>
+<dd>
+<code>id</code> - The calendar id<br><code>day_num</code> - The day number<br>
+</dd>
+</dl></dd>
+</dl>
+<hr>
+<h3><a id="setRangeLimitCellColor">setRangeLimitCellColor</a></h3>
+<tt>public FUNCTION <b>setRangeLimitCellColor</b>(id SMALLINT, color STRING)</tt><dl>
+<dd><p> Defines the color for days on range limits</p></dd>
+<dd><dl>
+<dt><b>Parameters:</b></dt>
+<dd>
+<code>id</code> - The calendar id<br><code>color</code> - The color (#RRGGBB)<br>
+</dd>
+</dl></dd>
+</dl>
+<hr>
 <h3><a id="setViewType">setViewType</a></h3>
 <tt>public FUNCTION <b>setViewType</b>(id SMALLINT, type SMALLINT)</tt><dl>
 <dd><p> Defines the view type of the calendar.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>id</code> - The calendar id<br><code>type</code> - The view type, can be: FGLCALENDAR_TYPE_DEFAULT, FGLCALENDAR_TYPE_ICON, FGLCALENDAR_TYPE_TEXT, FGLCALENDAR_TYPE_DOTS<br>
+<code>id</code> - The calendar id<br><code>type</code> - The view type, can be: FGLCALENDAR_TYPE_DEFAULT, FGLCALENDAR_TYPE_ICON, FGLCALENDAR_TYPE_TEXT, FGLCALENDAR_TYPE_DOTS, FGLCALENDAR_TYPE_SNAKE<br>
 </dd>
 </dl></dd>
 </dl>

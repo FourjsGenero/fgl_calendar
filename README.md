@@ -29,11 +29,6 @@ This library is under [MIT license](./LICENSE)
 1. make runjgas
 2. Open a web browser and enter the URL ``http://localhost:8080/``
 
-## Compilation in Genero Studio
-
-1. Load the *fglcalendar_demo.4pw* project
-2. Build the project
-
 ## Rebuilding the API doc
 
 1. make doc
